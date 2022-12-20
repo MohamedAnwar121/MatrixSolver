@@ -14,20 +14,20 @@ def gui():
 
 
 def main():
-    a = np.array([[1, 1, 2],
-                  [1, 6, 22],
-                  [2, 4, 3]], dtype='d')
-    b = np.array([11, 6, 5], dtype='d')
+    a = np.array([[1, 2],
+                  [7, 8]], dtype='d')
+    b = np.array([3, 9], dtype='d')
 
 
 
     print(a)
-    x = NumericalMethods.GaussElimination(a, b, True)
+    gauss = NumericalMethods(a, b, True, 4)
+    x = gauss.result
 
     # UiMainWindow()
     print(x)
 
 
 if __name__ == '__main__':
-    # main()
-    gui()
+    main()
+    # gui()

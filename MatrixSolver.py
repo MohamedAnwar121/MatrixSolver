@@ -1,3 +1,5 @@
+import time
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import *
@@ -8,6 +10,7 @@ from LUDecomposition import *
 from IterativeMethods import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from Precision import *
 
 
 class GUI(QMainWindow):
@@ -128,8 +131,6 @@ class GUI(QMainWindow):
         self.precisionbox.addItem("")
         self.precisionbox.addItem("")
         self.precisionbox.addItem("")
-        self.precisionbox.addItem("")
-        self.precisionbox.addItem("")
 
         self.proceedbtn = QtWidgets.QPushButton(self.MainFrame)
         self.proceedbtn.setGeometry(QtCore.QRect(950, 660, 181, 71))
@@ -144,14 +145,9 @@ class GUI(QMainWindow):
         font = QtGui.QFont()
         font.setPointSize(25)
         self.scalingbtn.setFont(font)
-        # self.scalingbtn.setStyleSheet("background-color: rgb(255, 255, 255);\n""color: rgb(0, 0, 0);")
         self.scalingbtn.setObjectName("scalingbtn")
         self.scalingState = False
-        self.scalingbtn.setStyleSheet("QPushButton"
-                                      "{"
-                                      "background-color : red;"
-                                      "}"
-                                      )
+        self.scalingbtn.setStyleSheet("QPushButton""{""background-color : red;""}")
 
         self.scalingbtn.clicked.connect(self.btnToggle)
 
@@ -249,13 +245,13 @@ class GUI(QMainWindow):
         self.resultslabel.setAlignment(QtCore.Qt.AlignCenter)
         self.resultslabel.setObjectName("resultslabel")
 
-        self.backButton = QtWidgets.QPushButton(self.Results)
-        self.backButton.setGeometry(QtCore.QRect(50, 670, 231, 71))
-        font = QtGui.QFont()
-        font.setPointSize(20)
-        self.backButton.setFont(font)
-        self.backButton.setObjectName("backButton")
-        self.backButton.clicked.connect(self.backButtonShowMenu)
+        # self.backButton = QtWidgets.QPushButton(self.Results)
+        # self.backButton.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        # font = QtGui.QFont()
+        # font.setPointSize(20)
+        # self.backButton.setFont(font)
+        # self.backButton.setObjectName("backButton")
+        # self.backButton.clicked.connect(self.backButtonShowMenu)
 
         # Lu select frame
         self.LuSelectFrame = QtWidgets.QFrame(self.centralwidget)
@@ -312,6 +308,7 @@ class GUI(QMainWindow):
         self.numOfIteraionsLineEdit.setStyleSheet("background-color: rgb(255, 255, 255);\n"
                                                   "color: rgb(0, 0, 0);")
         self.numOfIteraionsLineEdit.setObjectName("numOfIteraionsLineEdit")
+        self.numOfIteraionsLineEdit.setValidator(QDoubleValidator(-0.9, 0.9, 50))
 
         self.relativeErrolabel = QtWidgets.QLabel(self.iterativeParameters)
         self.relativeErrolabel.setGeometry(QtCore.QRect(90, 220, 381, 61))
@@ -324,6 +321,8 @@ class GUI(QMainWindow):
         self.relativeErrorLineEdit.setGeometry(QtCore.QRect(560, 241, 113, 29))
         self.relativeErrorLineEdit.setStyleSheet("background-color: rgb(255, 255, 255);\n""color: rgb(0, 0, 0);")
         self.relativeErrorLineEdit.setObjectName("relativeErrorLineEdit")
+        self.relativeErrorLineEdit.setValidator(QDoubleValidator(-0.9, 0.9, 50))
+
 
         self.initialGuesslabel = QtWidgets.QLabel(self.iterativeParameters)
         self.initialGuesslabel.setGeometry(QtCore.QRect(90, 380, 381, 71))
@@ -375,27 +374,25 @@ class GUI(QMainWindow):
         self.eqnbox.setItemText(5, _translate("MainWindow", "7"))
         self.eqnbox.setItemText(6, _translate("MainWindow", "8"))
         self.eqnbox.setItemText(7, _translate("MainWindow", "9"))
-        self.precisionbox.setCurrentText(_translate("MainWindow", "1"))
-        self.precisionbox.setItemText(0, _translate("MainWindow", "1"))
-        self.precisionbox.setItemText(1, _translate("MainWindow", "2"))
-        self.precisionbox.setItemText(2, _translate("MainWindow", "3"))
-        self.precisionbox.setItemText(3, _translate("MainWindow", "4"))
-        self.precisionbox.setItemText(4, _translate("MainWindow", "5"))
-        self.precisionbox.setItemText(5, _translate("MainWindow", "6"))
-        self.precisionbox.setItemText(6, _translate("MainWindow", "7"))
-        self.precisionbox.setItemText(7, _translate("MainWindow", "8"))
-        self.precisionbox.setItemText(8, _translate("MainWindow", "9"))
-        self.precisionbox.setItemText(9, _translate("MainWindow", "10"))
-        self.precisionbox.setItemText(10, _translate("MainWindow", "11"))
-        self.precisionbox.setItemText(11, _translate("MainWindow", "12"))
-        self.precisionbox.setItemText(12, _translate("MainWindow", "13"))
-        self.precisionbox.setItemText(13, _translate("MainWindow", "14"))
-        self.precisionbox.setItemText(14, _translate("MainWindow", "15"))
-        self.precisionbox.setItemText(15, _translate("MainWindow", "16"))
-        self.precisionbox.setItemText(16, _translate("MainWindow", "17"))
-        self.precisionbox.setItemText(17, _translate("MainWindow", "18"))
-        self.precisionbox.setItemText(18, _translate("MainWindow", "19"))
-        self.precisionbox.setItemText(19, _translate("MainWindow", "20"))
+        self.precisionbox.setCurrentText(_translate("MainWindow", "3"))
+        self.precisionbox.setItemText(0, _translate("MainWindow", "3"))
+        self.precisionbox.setItemText(1, _translate("MainWindow", "4"))
+        self.precisionbox.setItemText(2, _translate("MainWindow", "5"))
+        self.precisionbox.setItemText(3, _translate("MainWindow", "6"))
+        self.precisionbox.setItemText(4, _translate("MainWindow", "7"))
+        self.precisionbox.setItemText(5, _translate("MainWindow", "8"))
+        self.precisionbox.setItemText(6, _translate("MainWindow", "9"))
+        self.precisionbox.setItemText(7, _translate("MainWindow", "10"))
+        self.precisionbox.setItemText(8, _translate("MainWindow", "11"))
+        self.precisionbox.setItemText(9, _translate("MainWindow", "12"))
+        self.precisionbox.setItemText(10, _translate("MainWindow", "13"))
+        self.precisionbox.setItemText(11, _translate("MainWindow", "14"))
+        self.precisionbox.setItemText(12, _translate("MainWindow", "15"))
+        self.precisionbox.setItemText(13, _translate("MainWindow", "16"))
+        self.precisionbox.setItemText(14, _translate("MainWindow", "17"))
+        self.precisionbox.setItemText(15, _translate("MainWindow", "18"))
+        self.precisionbox.setItemText(16, _translate("MainWindow", "19"))
+        self.precisionbox.setItemText(17, _translate("MainWindow", "20"))
         self.proceedbtn.setText(_translate("MainWindow", "Proceed"))
         self.scalingbtn.setText(_translate("MainWindow", "Scaling"))
         self.proceedeqnbtn.setText(_translate("MainWindow", "Proceed"))
@@ -412,7 +409,7 @@ class GUI(QMainWindow):
         self.relativeErrolabel.setText(_translate("MainWindow", "Absolute relative error:"))
         self.initialGuesslabel.setText(_translate("MainWindow", "Initial guess:"))
         self.proceedbtn_3.setText(_translate("MainWindow", "Proceed"))
-        self.backButton.setText(_translate("MainWindow", "Back to menu"))
+        # self.backButton.setText(_translate("MainWindow", "Back to menu"))
 
     def btnToggle(self):
         self.scalingState = not self.scalingState
@@ -452,6 +449,7 @@ class GUI(QMainWindow):
                     self.initialGuessgrid.addWidget(label, 0, j)
                 else:
                     lineEdit = QLineEdit()
+                    lineEdit.setValidator(QDoubleValidator(-0.9, 0.9, 50))
                     lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);\n""color: rgb(0, 0, 0);")
                     self.initialGuessgrid.addWidget(lineEdit, 0, j)
 
@@ -459,33 +457,51 @@ class GUI(QMainWindow):
 
     def showSteps(self):
         # self.Results.hide()
+        precision = int(self.precisionbox.currentText())
+        operation = self.operationbox.currentText()
 
-        for i in self.stepsDic:
-            print(i)
-            self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-            self.newLabel.setFont(QFont("Tahoma", 35))
-            self.newLabel.setScaledContents(False)
-            self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
+        if operation == "Jacobi" or operation == "Gauss Seidel":
+            c = 1
+            for i in self.stepsDic:
+                self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+                self.newLabel.setFont(QFont("Tahoma", 35))
+                self.newLabel.setScaledContents(False)
+                self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
 
-            a = self.stepsDic[i]
-            arr1 = np.array(a[0])
-            arr2 = np.array(a[1])
-            print(arr1, arr2)
-            result = ""
-            for k in range(arr1[0].size):
-                result += "| "
-                for j in range(arr1[0].size):
-                    arr1[k][j] = float('%.7g' % arr1[k][j])
-                    result += str(arr1[k][j]) + " "
-                result += "| "
-                arr2[k] = float('%.7g' % arr2[k])
-                result += str(arr2[k]) + " "
-                result += "|\n"
+                newX = np.array(self.stepsDic[i], dtype='f8')
+                result = f"X{str(c).translate(self.SUB)} = " + str(newX) + "\n"
+                self.newLabel.setText(result)
+                self.verticalLayout.addWidget(self.newLabel)
+                c += 1
 
-            result += i + "\n"
-            self.newLabel.setText(result)
 
-            self.verticalLayout.addWidget(self.newLabel)
+        elif operation == "Gauss Elimination" or operation == "Gauss Jordan":
+            for i in self.stepsDic:
+                self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+                self.newLabel.setFont(QFont("Tahoma", 35))
+                self.newLabel.setScaledContents(False)
+                self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
+
+                a_b = self.stepsDic[i]
+
+                newA = np.array(a_b[0], dtype='f8')
+                newB = np.array(a_b[1], dtype='f8')
+                result = ""
+
+                for k in range(newA[0].size):
+                    result += "|  "
+                    for j in range(newA[0].size):
+                        newA[k][j] = Precision.sigFigures(precision, newA[k][j])
+                        result += str(newA[k][j]) + "   "
+                    result += "|  "
+                    newB[k] = Precision.sigFigures(precision, newB[k])
+                    result += str(newB[k]) + "  "
+                    result += "|\n"
+
+                result += i + "\n"
+                self.newLabel.setText(result)
+
+                self.verticalLayout.addWidget(self.newLabel)
 
         self.steps.raise_()
 
@@ -495,8 +511,8 @@ class GUI(QMainWindow):
         operation = self.operationbox.currentText()
         n = int(self.eqnbox.currentText())
 
-        a = np.array([[0 for x in range(n)] for y in range(n)])
-        b = np.array([0 for x in range(n)])
+        a = np.array([[0 for x in range(n)] for y in range(n)], dtype='f8')
+        b = np.array([0 for x in range(n)], dtype='f8')
 
         for i in range(n):
             for j in range(0, 2 * n, 2):
@@ -507,44 +523,54 @@ class GUI(QMainWindow):
             if self.grid.itemAtPosition(i, 2 * n + 1).widget().text() != '':
                 b[i] = float(self.grid.itemAtPosition(i, 2 * n + 1).widget().text())
 
+        start = time.time() # start runtime of the functions
+
         if operation == "Gauss Elimination" or operation == "Gauss Jordan":
             # self.equations.hide()
             x = None
             if operation == "Gauss Elimination":
-                gauss = NumericalMethods()
-                x = gauss.GaussElimination(a, b, self.scalingState, precision)
-                self.stepsDic = gauss.steps
+                gaussElimination = NumericalMethods(a, b, self.scalingState, precision)
+                x = gaussElimination.result
+                self.stepsDic = gaussElimination.steps
             else:
-                gauss = GaussJordan()
-                x = gauss.gaussjordan(a, b, precision)
-                self.stepsDic = gauss.steps
+                gaussJordan = GaussJordan()
+                x = gaussJordan.gaussjordan(a, b, self.scalingState, precision)
+                self.stepsDic = gaussJordan.steps
 
 
         elif operation == "LU Decomposition":
             # self.LuSelectFrame.hide()
 
             luOperation = self.operationbox_LU.currentText()
-            lu = LU(a, n, b)
-
-            if luOperation == "Downlittle Form":
-                lu.luDoolittleDecomposition()
-            elif luOperation == "Crout Form":
-                lu.crout()
-            elif luOperation == "Cholesky Form":
-                lu.luCholesky_Decomposition()
+            lu = LU(a, n, b, precision, luOperation)
+            lu.ManageLU()
+            matrixL = lu.l
+            matrixU = lu.u
             x = lu.x
+
+            print(x)
 
         elif operation == "Jacobi" or operation == "Gauss Seidel":
             # self.iterativeParameters.hide()
 
-            error = float(self.relativeErrorLineEdit.text())
-            numOfItr = int(self.numOfIteraionsLineEdit.text())
-            initialGuess = np.array([0 for x in range(n)])
+            error = None
+            strError = self.relativeErrorLineEdit.text()
+            if strError == '':
+                error = 0
+                strError = "0"
+            elif strError[0] == 'e':
+                strError = "1" + strError
+                error = float(strError)
+            else:
+                error = float(strError)
+
+            numOfItr = int(self.numOfIteraionsLineEdit.text() if self.numOfIteraionsLineEdit.text() != '' else 0)
+            initialGuess = np.array([0 for x in range(n)], dtype='f8')
             for i in range(n):
-                if self.grid.itemAtPosition(0, i).widget().text() != '' and i % 2 == 1:
+                if self.initialGuessgrid.itemAtPosition(0, i).widget().text() != '' and i % 2 == 1:
                     initialGuess[i] = float(self.initialGuessgrid.itemAtPosition(0, i).widget().text())
 
-            iterative = IterativeMethods(n, a, b, error, numOfItr)
+            iterative = IterativeMethods(n, a, b, precision, initialGuess, error, numOfItr)
 
             if operation == "Jacobi":
                 iterative.ManageJacobi()
@@ -552,14 +578,19 @@ class GUI(QMainWindow):
                 iterative.ManageSeidel()
 
             x = iterative.x
+            self.stepsDic = iterative.steps
 
         if isinstance(x, str):
-            label = QLabel("System has no unique Solution \n(Singular)")
+            label = QLabel()
             font = label.font()
             font.setPointSize(30)
             label.setFont(font)
             label.setScaledContents(False)
             label.setAlignment(QtCore.Qt.AlignCenter)
+            if x == "Invalid":
+                label.setText("System has no solution \n(Inconsistent)")
+            elif x == "Infinite":
+                label.setText("System has Infinite number of solutions \n(Inconsistent)")
             self.ResultsLayout.addWidget(label)
             self.Results.raise_()
             return
@@ -573,20 +604,28 @@ class GUI(QMainWindow):
             label.setAlignment(QtCore.Qt.AlignCenter)
             self.ResultsLayout.addWidget(label)
 
+        end = time.time()
+        label = QLabel("Runtime = " + str((end - start) * (10 ** 3)) + " ms")
+        font = label.font()
+        font.setPointSize(30)
+        label.setFont(font)
+        label.setScaledContents(False)
+        label.setAlignment(QtCore.Qt.AlignCenter)
+        self.ResultsLayout.addWidget(label)
+
         self.Results.raise_()
 
     def proceedbtnLU(self):
         self.showResults()
 
-    def backButtonShowMenu(self):
-        print("back")
-        # self.Results.hide()
-        # self.equations.hide()
-        # self.LuSelectFrame.hide()
-        # self.iterativeParameters.hide()
-        # self.steps.hide()
-        self.MainFrame.raise_()
-        # self.setCentralWidget(self.centralwidget)
+    # def backButtonShowMenu(self):
+    #     # self.Results.hide()
+    #     # self.equations.hide()
+    #     # self.LuSelectFrame.hide()
+    #     # self.iterativeParameters.hide()
+    #     # self.steps.hide()
+    #     self.MainFrame.raise_()
+    #     # self.setCentralWidget(self.centralwidget)
 
     def drawEqns(self, numOfEqn):
         temp = 0
@@ -608,6 +647,7 @@ class GUI(QMainWindow):
                     self.grid.addWidget(label, i, j)
                 else:
                     lineEdit = QLineEdit()
+                    lineEdit.setValidator(QDoubleValidator(-0.9, 0.9, 50))
                     lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);\n""color: rgb(0, 0, 0);")
                     lineEdit.setPlaceholderText("a" + str(i * numOfEqn + j // 2 + 1).translate(self.SUB))
                     self.grid.addWidget(lineEdit, i, j)
@@ -617,6 +657,7 @@ class GUI(QMainWindow):
             font.setPointSize(20)
             label.setFont(font)
             lineEdit = QLineEdit()
+            lineEdit.setValidator(QDoubleValidator(-0.9, 0.9, 50))
             lineEdit.setStyleSheet("background-color: rgb(255, 255, 255);\n""color: rgb(0, 0, 0);")
             lineEdit.setPlaceholderText("b" + str(i + 1).translate(self.SUB))
             self.grid.addWidget(label, i, temp + 1)

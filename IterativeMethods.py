@@ -1,26 +1,26 @@
 from abc import ABC, abstractmethod
+from Precision import *
 
 
 class IterativeMethods:
 
-    def __init__(self, n, a, b, tol=1e-5, iterations=50):
+    def __init__(self, n, a, b, noOfSig, initialGuess, tol=1e-5, iterations=50):
         self.numberOfVariables = n
+        self.sig = noOfSig
+        self.steps = {}
         self.a = a
         self.b = b
         self.errorTolerance = tol
         self.nIteration = iterations
-        self.x = [0 for x in range(self.numberOfVariables)]
+        self.x = initialGuess
+        self.steps["initial guess"] = self.x.copy()
 
-    # check the given matrix is  Diagonally Dominant Matrix or not.
     def isDDM(self):
 
-        # iterate over rows
         for i in range(0, self.numberOfVariables):
             sum = 0
-            # get sum of each row
             for j in range(0, self.numberOfVariables):
                 sum = sum + abs(self.a[i][j])
-            # subtract the diagonal number
             sum = sum - abs(self.a[i][i])
             if abs(self.a[i][i]) < sum:
                 return False
@@ -42,7 +42,7 @@ class IterativeMethods:
             for i in range(0, self.numberOfVariables):
                 if (j != i):
                     d -= self.a[j][i] * self.x[i]
-            x_new[j] = d / self.a[j][j]
+            x_new[j] = Precision.sigFigures(self.sig, d / self.a[j][j])
         return x_new
 
     def seidel(self):
@@ -52,32 +52,36 @@ class IterativeMethods:
             for i in range(0, self.numberOfVariables):
                 if (j != i):
                     d -= self.a[j][i] * self.x[i]
-            self.x[j] = d / self.a[j][j]
+            self.x[j] = Precision.sigFigures(self.sig, d / self.a[j][j])
         return self.x
 
     # loop run for nIteration times and break if the given errorTolerance is achieved
     def ManageJacobi(self):
-        steps = {}
-        for i in range(0, self.nIteration):
-            x_new = self.jacobi()
-            error = IterativeMethods.calc_error(x_new, self.x)
-            self.x = x_new
-            if error < self.errorTolerance:
-                break
-            # print each time the updated solution
-            steps["Iteration "+str(i)] = self.x
-            print(self.x)
+
+        # try:
+            for i in range(0, self.nIteration):
+                x_new = self.jacobi()
+                error = IterativeMethods.calc_error(x_new, self.x)
+                self.x = x_new
+                if error < self.errorTolerance:
+                    break
+                self.steps["iteration " + str(i)] = self.x
+                print(self.steps)
+        # except:
+        #     self.x = "Invalid"
 
     # loop run for nIteration times and break if the given errorTolerance is achieved
     def ManageSeidel(self):
-        steps = {}
-        for i in range(0, self.nIteration):
-            x_prev = self.x.copy()
-            x_new = self.seidel()
-            error = IterativeMethods.calc_error(x_new, x_prev)
-            self.x = x_new
-            if error < self.errorTolerance:
-                break
-            # print each time the updated solution
-            steps["Iteration " + str(i)] = self.x
-            print(self.x)
+
+        # try:
+            for i in range(0, self.nIteration):
+                x_prev = self.x.copy()
+                x_new = self.seidel()
+                error = IterativeMethods.calc_error(x_new, x_prev)
+                self.x = x_new
+                if error < self.errorTolerance:
+                    break
+                self.steps["iteration " + str(i)] = self.x.copy()
+        # except:
+        #     self.x = "Invalid"
+
