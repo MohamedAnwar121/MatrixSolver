@@ -22,7 +22,7 @@ def main():
 
 
     print(a)
-    x = numerical.GaussElimination(a, b, True)
+    x = NumericalMethods.GaussElimination(a, b, True)
 
     # UiMainWindow()
     print(x)

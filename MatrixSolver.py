@@ -190,7 +190,6 @@ class GUI(QMainWindow):
         self.steps.setFrameShadow(QtWidgets.QFrame.Raised)
         self.steps.setObjectName("steps")
 
-
         self.scrollArea = QtWidgets.QScrollArea(self.steps)
         self.scrollArea.setGeometry(QtCore.QRect(0, 0, 1200, 800))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
@@ -210,11 +209,9 @@ class GUI(QMainWindow):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")
 
-
         # self.label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         # self.label.setObjectName("label")
         # self.verticalLayout.addWidget(self.label)
-
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
@@ -295,7 +292,6 @@ class GUI(QMainWindow):
         self.proceedbtn_2.setFont(font)
         self.proceedbtn_2.setObjectName("proceedbtn_2")
         self.proceedbtn_2.clicked.connect(self.showResults)
-
 
         self.iterativeParameters = QtWidgets.QFrame(self.centralwidget)
         self.iterativeParameters.setGeometry(QtCore.QRect(0, 0, 1200, 800))
@@ -428,7 +424,7 @@ class GUI(QMainWindow):
     def proceedbtnChangeFrame(self):
         numOfEqn = int(self.eqnbox.currentText())
         self.drawEqns(numOfEqn)
-        self.MainFrame.hide()
+        # self.MainFrame.hide()
         self.equations.raise_()
 
     def proceedbtnEqn(self):
@@ -437,10 +433,10 @@ class GUI(QMainWindow):
         if operation == "Gauss Elimination" or operation == "Gauss Jordan":
             self.showResults()
         elif operation == "LU Decomposition":
-            self.equations.hide()
+            # self.equations.hide()
             self.LuSelectFrame.raise_()
         elif operation == "Jacobi" or operation == "Gauss Seidel":
-            self.equations.hide()
+            # self.equations.hide()
 
             for j in range(0, 2 * numOfEqn):
                 temp = j
@@ -461,27 +457,30 @@ class GUI(QMainWindow):
 
             self.iterativeParameters.raise_()
 
-
     def showSteps(self):
-        self.Results.hide()
-
+        # self.Results.hide()
 
         for i in self.stepsDic:
+            print(i)
             self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
             self.newLabel.setFont(QFont("Tahoma", 35))
             self.newLabel.setScaledContents(False)
             self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
 
-            arr = np.array(self.stepsDic[i])
+            a = self.stepsDic[i]
+            arr1 = np.array(a[0])
+            arr2 = np.array(a[1])
+            print(arr1, arr2)
             result = ""
-            for k in range(arr[0].size):
+            for k in range(arr1[0].size):
                 result += "| "
-                for j in range(arr[0].size):
-                    arr[k][j] = float('%.7g' % arr[k][j])
-                    result += str(arr[k][j]) + " "
+                for j in range(arr1[0].size):
+                    arr1[k][j] = float('%.7g' % arr1[k][j])
+                    result += str(arr1[k][j]) + " "
+                result += "| "
+                arr2[k] = float('%.7g' % arr2[k])
+                result += str(arr2[k]) + " "
                 result += "|\n"
-
-
 
             result += i + "\n"
             self.newLabel.setText(result)
@@ -489,8 +488,6 @@ class GUI(QMainWindow):
             self.verticalLayout.addWidget(self.newLabel)
 
         self.steps.raise_()
-
-
 
     def showResults(self):
         global x
@@ -511,17 +508,20 @@ class GUI(QMainWindow):
                 b[i] = float(self.grid.itemAtPosition(i, 2 * n + 1).widget().text())
 
         if operation == "Gauss Elimination" or operation == "Gauss Jordan":
-            self.equations.hide()
+            # self.equations.hide()
             x = None
             if operation == "Gauss Elimination":
                 gauss = NumericalMethods()
                 x = gauss.GaussElimination(a, b, self.scalingState, precision)
-                self.stepsDic = gauss.m
+                self.stepsDic = gauss.steps
             else:
-                x = gaussjordan(a, b, precision)
+                gauss = GaussJordan()
+                x = gauss.gaussjordan(a, b, precision)
+                self.stepsDic = gauss.steps
+
 
         elif operation == "LU Decomposition":
-            self.LuSelectFrame.hide()
+            # self.LuSelectFrame.hide()
 
             luOperation = self.operationbox_LU.currentText()
             lu = LU(a, n, b)
@@ -535,7 +535,7 @@ class GUI(QMainWindow):
             x = lu.x
 
         elif operation == "Jacobi" or operation == "Gauss Seidel":
-            self.iterativeParameters.hide()
+            # self.iterativeParameters.hide()
 
             error = float(self.relativeErrorLineEdit.text())
             numOfItr = int(self.numOfIteraionsLineEdit.text())
@@ -543,7 +543,6 @@ class GUI(QMainWindow):
             for i in range(n):
                 if self.grid.itemAtPosition(0, i).widget().text() != '' and i % 2 == 1:
                     initialGuess[i] = float(self.initialGuessgrid.itemAtPosition(0, i).widget().text())
-
 
             iterative = IterativeMethods(n, a, b, error, numOfItr)
 
@@ -580,16 +579,14 @@ class GUI(QMainWindow):
         self.showResults()
 
     def backButtonShowMenu(self):
-        pass
+        print("back")
         # self.Results.hide()
         # self.equations.hide()
         # self.LuSelectFrame.hide()
         # self.iterativeParameters.hide()
         # self.steps.hide()
-        # self.MainFrame.raise_()
+        self.MainFrame.raise_()
         # self.setCentralWidget(self.centralwidget)
-
-
 
     def drawEqns(self, numOfEqn):
         temp = 0

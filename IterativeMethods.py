@@ -57,6 +57,7 @@ class IterativeMethods:
 
     # loop run for nIteration times and break if the given errorTolerance is achieved
     def ManageJacobi(self):
+        steps = {}
         for i in range(0, self.nIteration):
             x_new = self.jacobi()
             error = IterativeMethods.calc_error(x_new, self.x)
@@ -64,10 +65,12 @@ class IterativeMethods:
             if error < self.errorTolerance:
                 break
             # print each time the updated solution
+            steps["Iteration "+str(i)] = self.x
             print(self.x)
 
     # loop run for nIteration times and break if the given errorTolerance is achieved
     def ManageSeidel(self):
+        steps = {}
         for i in range(0, self.nIteration):
             x_prev = self.x.copy()
             x_new = self.seidel()
@@ -76,4 +79,5 @@ class IterativeMethods:
             if error < self.errorTolerance:
                 break
             # print each time the updated solution
+            steps["Iteration " + str(i)] = self.x
             print(self.x)

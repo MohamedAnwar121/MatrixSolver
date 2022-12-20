@@ -6,20 +6,23 @@ class NumericalMethods:
     def GaussElimination(self, a, b, scaling, precision, er=0, tol=1e-18):
         n = a[0].size
         s = np.zeros(n)
+        al = a.copy()
+        bl = b.copy()
         self.getMaxInCol(a, s)
         x = np.zeros(n)
 
-        self.m = {
-            "": a.copy()
-        }
+        self.steps = {
 
+        }
         print(a)
-        self.eliminate(a, b, x, s, er, tol, scaling)
+        self.eliminate(a, b, al, bl, x, s, er, tol, scaling)
         if er != -1:
             if self.substitute(a, b, x) == "Singular":
                 return "Singular"
         else:
             return "Singular"
+        s = "final matrix\n"
+        self.steps[s] = [a, b]
         return x
 
     def getMaxInCol(self, a, s):
@@ -29,13 +32,13 @@ class NumericalMethods:
                 if abs(a[i][j]) > s[i]:
                     s[i] = a[i][j]
 
-    def eliminate(self, a, b, x, s, er, tol, scaling):
+    def eliminate(self, a, b, al, bl, x, s, er, tol, scaling):
         n = a[0].size
         for k in range(0, n - 1):
             if scaling:
-                self.pivotWithScaling(a, b, s, k)
+                self.pivotWithScaling(a, b, al, bl, s, k)
             else:
-                self.pivotWithoutScaling(a, b, k)
+                self.pivotWithoutScaling(a, b, al, bl, k)
 
             if abs(a[k][k]) < tol:
                 er = -1
@@ -51,7 +54,9 @@ class NumericalMethods:
                 print(f"R{i + 1} - {factor} * R{k + 1}\n")
 
                 s = f"R{i + 1} - {factor} * R{k + 1}\n"
-                self.m[s] = a.copy()
+                self.steps[s] = [al.copy(), bl.copy()]
+                al = a.copy()
+                bl = b.copy()
 
         if abs(a[n - 1][n - 1]) < tol:
             er = -1
@@ -73,7 +78,7 @@ class NumericalMethods:
 
             x[i] = round((b[i] - sm) / a[i][i], 5)
 
-    def pivotWithScaling(self, a, b, s, k):
+    def pivotWithScaling(self, a, b, al, bl, s, k):
         n = a[0].size
         p = k
         dummy = 0
@@ -97,9 +102,11 @@ class NumericalMethods:
             print(a, )
             print(f"R{k + 1} <-> R{p + 1}\n")
             s = f"R{k + 1} <-> R{p + 1}\n"
-            self.m[s] = a.copy()
+            self.steps[s] = [al.copy(), bl.copy()]
+            al = a.copy()
+            bl = b.copy()
 
-    def pivotWithoutScaling(self, a, b, k):
+    def pivotWithoutScaling(self, a, b, al, bl, k):
         n = a[0].size
         p = k
 
@@ -115,7 +122,8 @@ class NumericalMethods:
                 a[k][j], a[p][j] = a[p][j], a[k][j]
             b[p], b[k] = b[k], b[p]
 
-            print(a, )
             print(f"R{k + 1} <-> R{p + 1}\n")
             s = f"R{k + 1} <-> R{p + 1}\n"
-            self.m[s] = a.copy()
+            self.steps[s] = [al.copy(), bl.copy()]
+            al = a.copy()
+            bl = b.copy()
