@@ -20,6 +20,7 @@ class LU:
         self.choleskyUpper = [[0 for x in range(self.n)] for y in range(self.n)]
         self.croutlower = [[0 for x in range(n)] for y in range(n)]
         self.croutupper = [[0 for x in range(n)] for y in range(n)]
+        self.steps = {}
 
     def ManageLU(self):
 
@@ -35,38 +36,35 @@ class LU:
 
     def luDoolittleDecomposition(self):
 
-        # Decomposing matrix into Upper
-        # and Lower triangular matrix
+
         for i in range(self.n):
 
-            # Upper Triangular
+            # upper triangle
             for k in range(i, self.n):
 
-                # Summation of L(i, j) * U(j, k)
                 sum = 0
                 for j in range(i):
                     sum += (self.doolittlelower[i][j] * self.doolittleupper[j][k])
 
-                # Evaluating U(i, k)
                 self.doolittleupper[i][k] = Precision.sigFigures(self.sig, self.a[i][k] - sum)
                 print(self.doolittleupper)
 
-
-            # Lower Triangular
+            # upper triangle
             for k in range(i, self.n):
                 if i == k:
-                    self.doolittlelower[i][i] = 1  # Diagonal as 1
+                    self.doolittlelower[i][i] = 1
                 else:
-
-                    # Summation of L(k, j) * U(j, i)
                     sum = 0
                     for j in range(i):
                         sum += (self.doolittlelower[k][j] * self.doolittleupper[j][i])
 
-                    # Evaluating L(k, i)
+                    # evaluate
                     self.doolittlelower[k][i] = Precision.sigFigures(self.sig,
                                                                      (self.a[k][i] - sum) / self.doolittleupper[i][i])
                     print(self.doolittlelower)
+
+            self.steps["L" + str(i)] = self.doolittlelower.copy()
+            self.steps["U" + str(i)] = self.doolittleupper.copy()
 
         self.l = self.doolittlelower
         self.u = self.doolittleupper
@@ -74,8 +72,7 @@ class LU:
 
     def luCholesky_Decomposition(self):
 
-        # Decomposing a matrix
-        # into Lower Triangular
+        # Lower Triangular
         for i in range(self.n):
             for j in range(i + 1):
                 sum1 = 0
@@ -87,18 +84,16 @@ class LU:
                     self.choleskylower[j][j] = Precision.sigFigures(self.sig, math.sqrt(self.a[j][j] - sum1))
                 else:
 
-                    # Evaluating L(i, j)
-                    # using L(j, j)
+                    # Evaluating
                     for k in range(j):
                         sum1 += (self.choleskylower[i][k] * self.choleskylower[j][k])
                     if self.choleskylower[j][j] > 0:
                         self.choleskylower[i][j] = Precision.sigFigures(self.sig,
                                                                         (self.a[i][j] - sum1) / self.choleskylower[j][
                                                                             j])
+            self.steps["L" + str(i)] = self.choleskylower.copy()
 
-        # Displaying Lower Triangular
-        # and its Transpose
-        print("Lower Triangular\t\tTranspose")
+
         for i in range(self.n):
             for j in range(self.n):
                 self.choleskyUpper[j][i] = self.choleskylower[i][j]
@@ -106,23 +101,27 @@ class LU:
         self.l = self.choleskylower
         self.u = self.choleskyUpper
         self.eliminate(self.choleskylower, self.choleskyUpper)
+        self.steps["U"] = self.choleskyUpper.copy()
 
     def crout(self):
 
         for j in range(self.n):
-            self.croutupper[j][j] = 1  # set the j,j-th entry of U to 1
-            for i in range(j, self.n):  # starting at L[j][j], solve j-th column of L
+            self.croutupper[j][j] = 1
+            for i in range(j, self.n):
                 alpha = float(self.a[i][j])
                 for k in range(j):
                     alpha -= self.croutlower[i][k] * self.croutupper[k][j]
                 self.croutlower[i][j] = Precision.sigFigures(self.sig, alpha)
-            for i in range(j + 1, self.n):  # starting at U[j][j+1], solve j-th row of U
+            for i in range(j + 1, self.n):
                 tempU = float(self.a[j][i])
                 for k in range(j):
                     tempU -= self.croutlower[j][k] * self.croutupper[k][i]
                 if int(self.croutlower[j][j]) == 0:
                     self.croutlower[j][j] = e - 40
                 self.croutupper[j][i] = Precision.sigFigures(self.sig, tempU / self.croutlower[j][j])
+
+            self.steps["L" + str(i)] = self.croutlower.copy()
+            self.steps["U" + str(i)] = self.croutupper.copy()
 
         self.l = self.croutlower
         self.u = self.croutupper

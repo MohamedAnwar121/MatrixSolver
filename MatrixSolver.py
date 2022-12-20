@@ -205,10 +205,6 @@ class GUI(QMainWindow):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")
 
-        # self.label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        # self.label.setObjectName("label")
-        # self.verticalLayout.addWidget(self.label)
-
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         # results
@@ -244,14 +240,6 @@ class GUI(QMainWindow):
         self.resultslabel.setFont(font)
         self.resultslabel.setAlignment(QtCore.Qt.AlignCenter)
         self.resultslabel.setObjectName("resultslabel")
-
-        # self.backButton = QtWidgets.QPushButton(self.Results)
-        # self.backButton.setGeometry(QtCore.QRect(50, 670, 231, 71))
-        # font = QtGui.QFont()
-        # font.setPointSize(20)
-        # self.backButton.setFont(font)
-        # self.backButton.setObjectName("backButton")
-        # self.backButton.clicked.connect(self.backButtonShowMenu)
 
         # Lu select frame
         self.LuSelectFrame = QtWidgets.QFrame(self.centralwidget)
@@ -409,7 +397,6 @@ class GUI(QMainWindow):
         self.relativeErrolabel.setText(_translate("MainWindow", "Absolute relative error:"))
         self.initialGuesslabel.setText(_translate("MainWindow", "Initial guess:"))
         self.proceedbtn_3.setText(_translate("MainWindow", "Proceed"))
-        # self.backButton.setText(_translate("MainWindow", "Back to menu"))
 
     def btnToggle(self):
         self.scalingState = not self.scalingState
@@ -421,7 +408,6 @@ class GUI(QMainWindow):
     def proceedbtnChangeFrame(self):
         numOfEqn = int(self.eqnbox.currentText())
         self.drawEqns(numOfEqn)
-        # self.MainFrame.hide()
         self.equations.raise_()
 
     def proceedbtnEqn(self):
@@ -430,10 +416,8 @@ class GUI(QMainWindow):
         if operation == "Gauss Elimination" or operation == "Gauss Jordan":
             self.showResults()
         elif operation == "LU Decomposition":
-            # self.equations.hide()
             self.LuSelectFrame.raise_()
         elif operation == "Jacobi" or operation == "Gauss Seidel":
-            # self.equations.hide()
 
             for j in range(0, 2 * numOfEqn):
                 temp = j
@@ -456,7 +440,6 @@ class GUI(QMainWindow):
             self.iterativeParameters.raise_()
 
     def showSteps(self):
-        # self.Results.hide()
         precision = int(self.precisionbox.currentText())
         operation = self.operationbox.currentText()
 
@@ -502,6 +485,8 @@ class GUI(QMainWindow):
                 self.newLabel.setText(result)
 
                 self.verticalLayout.addWidget(self.newLabel)
+        # elif operation == "LU Decomposition":
+
 
         self.steps.raise_()
 
@@ -605,9 +590,9 @@ class GUI(QMainWindow):
             self.ResultsLayout.addWidget(label)
 
         end = time.time()
-        label = QLabel("Runtime = " + str((end - start) * (10 ** 3)) + " ms")
+        label = QLabel("Runtime = " + str(float(round((end - start) * (10 ** 3), 7))) + " ms")
         font = label.font()
-        font.setPointSize(30)
+        font.setPointSize(20)
         label.setFont(font)
         label.setScaledContents(False)
         label.setAlignment(QtCore.Qt.AlignCenter)
@@ -618,14 +603,6 @@ class GUI(QMainWindow):
     def proceedbtnLU(self):
         self.showResults()
 
-    # def backButtonShowMenu(self):
-    #     # self.Results.hide()
-    #     # self.equations.hide()
-    #     # self.LuSelectFrame.hide()
-    #     # self.iterativeParameters.hide()
-    #     # self.steps.hide()
-    #     self.MainFrame.raise_()
-    #     # self.setCentralWidget(self.centralwidget)
 
     def drawEqns(self, numOfEqn):
         temp = 0

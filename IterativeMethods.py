@@ -31,6 +31,8 @@ class IterativeMethods:
     def calc_error(x_new, x):
         e = -1
         for i in range(0, len(x)):
+            if x_new[i] == 0:
+                return -1
             e = max(abs((x_new[i] - x[i]) / x_new[i]), e)
         return e
 
@@ -58,30 +60,29 @@ class IterativeMethods:
     # loop run for nIteration times and break if the given errorTolerance is achieved
     def ManageJacobi(self):
 
-        # try:
+         try:
             for i in range(0, self.nIteration):
                 x_new = self.jacobi()
                 error = IterativeMethods.calc_error(x_new, self.x)
                 self.x = x_new
-                if error < self.errorTolerance:
-                    break
                 self.steps["iteration " + str(i)] = self.x
-                print(self.steps)
-        # except:
-        #     self.x = "Invalid"
+                if error < self.errorTolerance or error == -1:
+                    break
+         except:
+            self.x = "Invalid"
 
     # loop run for nIteration times and break if the given errorTolerance is achieved
     def ManageSeidel(self):
 
-        # try:
+         try:
             for i in range(0, self.nIteration):
                 x_prev = self.x.copy()
                 x_new = self.seidel()
                 error = IterativeMethods.calc_error(x_new, x_prev)
                 self.x = x_new
-                if error < self.errorTolerance:
-                    break
                 self.steps["iteration " + str(i)] = self.x.copy()
-        # except:
-        #     self.x = "Invalid"
+                if error < self.errorTolerance or error == -1:
+                    break
+         except:
+            self.x = "Invalid"
 

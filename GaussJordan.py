@@ -13,19 +13,12 @@ class GaussJordan:
         self.steps = {
             "Initial Matrix": [a.copy(), b.copy()]
         }
-        # check for singularity
-        # if np.fabs(det) < 1e-18:
-        #     print("singular")
-        #     return
-        # scaling
+
         for i in range(n):
             s[i] = a[i, 0]
             for j in range(1, n):
                 if np.fabs(a[i, j]) > np.fabs(s[i]):
                     s[i] = a[i, j]
-
-            # if np.fabs(s[i]) < 1e-18:
-            #     return "Invalid"
 
         # elimination
         for k in range(n):
@@ -88,7 +81,6 @@ class GaussJordan:
                 self.steps[step] = [a.copy(), b.copy()]
                 print(a)
                 print(b)
-        # print(b)
         for i in range(n):
             if np.fabs(a[i, i]) < 1e-18 and np.fabs(b[i]) < 1e-18:
                 return "Infinite"
@@ -97,5 +89,4 @@ class GaussJordan:
             ans[i] = b[i]
         step = "Final Matrix\n"
         self.steps[step] = [a.copy(), b.copy()]
-        # print(self.steps)
         return ans

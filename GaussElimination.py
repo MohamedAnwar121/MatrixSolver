@@ -19,9 +19,7 @@ class NumericalMethods:
         }
         print(a)
 
-        temp = self.eliminate(a, b, x, s, er, tol, scaling)
-        if isinstance(temp, str):
-            return temp
+        self.eliminate(a, b, x, s, er, tol, scaling)
 
         temp = self.substitute(a, b, x)
         if isinstance(temp, str):
@@ -46,17 +44,17 @@ class NumericalMethods:
             else:
                 self.pivotWithoutScaling(a, b, k)
 
-            if a[k][k] == 0 and b[k] == 0:
-                return "Infinite"
-            elif a[k][k] == 0:
-                return "Invalid"
+            # if a[k][k] == 0 and b[k] == 0:
+            #     return "Infinite"
+            if a[k][k] < tol:
+                continue
+                # return "Invalid"
 
             # if abs(a[k][k]) < tol:
             #     er = -1
             #     return
 
             for i in range(k + 1, n):
-
 
                 factor = Precision.sigFigures(self.sigFig, a[i][k] / a[k][k])
 
