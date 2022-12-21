@@ -11,6 +11,7 @@ from IterativeMethods import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from Precision import *
+import sys
 
 
 class GUI(QMainWindow):
@@ -384,7 +385,6 @@ class GUI(QMainWindow):
         self.proceedbtn.setText(_translate("MainWindow", "Proceed"))
         self.scalingbtn.setText(_translate("MainWindow", "Scaling"))
         self.proceedeqnbtn.setText(_translate("MainWindow", "Proceed"))
-        # self.label.setText(_translate("MainWindow", "TextLabel"))
         self.stepsbtn.setText(_translate("MainWindow", "show steps"))
         self.resultslabel.setText(_translate("MainWindow", "Results"))
 
@@ -444,7 +444,7 @@ class GUI(QMainWindow):
         operation = self.operationbox.currentText()
 
         if operation == "Jacobi" or operation == "Gauss Seidel":
-            c = 1
+            c = 0
             for i in self.stepsDic:
                 self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
                 self.newLabel.setFont(QFont("Tahoma", 35))
@@ -485,7 +485,36 @@ class GUI(QMainWindow):
                 self.newLabel.setText(result)
 
                 self.verticalLayout.addWidget(self.newLabel)
-        # elif operation == "LU Decomposition":
+        elif operation == "LU Decomposition":
+            for i in self.stepsDic:
+
+                self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+                self.newLabel.setFont(QFont("Tahoma", 35))
+                self.newLabel.setScaledContents(False)
+                self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
+                result = ""
+
+                print(np.array(self.stepsDic[i]).ndim)
+
+                if np.array(self.stepsDic[i]).ndim == 1:
+                    result = i + " = " + str(self.stepsDic[i]) + "\n"
+                    self.newLabel.setText(result)
+                    self.verticalLayout.addWidget(self.newLabel)
+                    continue
+
+                l_u = np.array(self.stepsDic[i], dtype='f8')
+                result += i + " = "
+
+                for k in range(l_u[0].size):
+                    for j in range(l_u[0].size):
+                        l_u[k][j] = Precision.sigFigures(precision, l_u[k][j])
+
+                for k in l_u:
+                    result += str(k) + "\n"
+                    result += "        "
+
+                self.newLabel.setText(result)
+                self.verticalLayout.addWidget(self.newLabel)
 
 
         self.steps.raise_()
@@ -514,7 +543,7 @@ class GUI(QMainWindow):
             # self.equations.hide()
             x = None
             if operation == "Gauss Elimination":
-                gaussElimination = NumericalMethods(a, b, self.scalingState, precision)
+                gaussElimination = GaussElimination(a, b, self.scalingState, precision)
                 x = gaussElimination.result
                 self.stepsDic = gaussElimination.steps
             else:
@@ -532,8 +561,7 @@ class GUI(QMainWindow):
             matrixL = lu.l
             matrixU = lu.u
             x = lu.x
-
-            print(x)
+            self.stepsDic = lu.steps
 
         elif operation == "Jacobi" or operation == "Gauss Seidel":
             # self.iterativeParameters.hide()
@@ -576,6 +604,9 @@ class GUI(QMainWindow):
                 label.setText("System has no solution \n(Inconsistent)")
             elif x == "Infinite":
                 label.setText("System has Infinite number of solutions \n(Inconsistent)")
+            elif x == "Singular":
+                label.setText("System has no unique solution \n(Singular)")
+
             self.ResultsLayout.addWidget(label)
             self.Results.raise_()
             return
@@ -644,7 +675,6 @@ class GUI(QMainWindow):
 
 
 if __name__ == "__main__":
-    import sys
 
     app = QtWidgets.QApplication(sys.argv)
     ui = GUI()

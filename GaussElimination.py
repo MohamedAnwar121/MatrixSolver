@@ -2,12 +2,12 @@ import numpy as np
 from Precision import *
 
 
-class NumericalMethods:
+class GaussElimination:
 
-    def __init__(self, a, b, scaling, precision, er=0, tol=1e-18):
-        self.result = self.GaussElimination(a, b, scaling, precision, er=0, tol=1e-18)
+    def __init__(self, a, b, scaling, precision, tol=1e-18):
+        self.result = self.gaussElimination(a, b, scaling, precision, tol=1e-18)
 
-    def GaussElimination(self, a, b, scaling, precision, er=0, tol=1e-18):
+    def gaussElimination(self, a, b, scaling, precision, tol=1e-18):
         n = a[0].size
         s = np.zeros(n)
         self.sigFig = precision
@@ -17,9 +17,8 @@ class NumericalMethods:
         self.steps = {
             "Initial Matrix": [a.copy(), b.copy()]
         }
-        print(a)
 
-        self.eliminate(a, b, x, s, er, tol, scaling)
+        self.eliminate(a, b, x, s, tol, scaling)
 
         temp = self.substitute(a, b, x)
         if isinstance(temp, str):
@@ -36,7 +35,7 @@ class NumericalMethods:
                 if abs(a[i][j]) > s[i]:
                     s[i] = a[i][j]
 
-    def eliminate(self, a, b, x, s, er, tol, scaling):
+    def eliminate(self, a, b, x, s, tol, scaling):
         n = a[0].size
         for k in range(0, n - 1):
             if scaling:
@@ -44,15 +43,8 @@ class NumericalMethods:
             else:
                 self.pivotWithoutScaling(a, b, k)
 
-            # if a[k][k] == 0 and b[k] == 0:
-            #     return "Infinite"
             if a[k][k] < tol:
                 continue
-                # return "Invalid"
-
-            # if abs(a[k][k]) < tol:
-            #     er = -1
-            #     return
 
             for i in range(k + 1, n):
 
@@ -61,8 +53,6 @@ class NumericalMethods:
                 for j in range(k, n):
                     a[i][j] -= Precision.sigFigures(self.sigFig, a[k][j] * factor)
                 b[i] = Precision.sigFigures(self.sigFig, b[i] - factor * b[k])
-                print(a)
-                print(f"R{i + 1} = R{i + 1} - {factor} * R{k + 1}\n")
 
                 string = f"R{i + 1} = R{i + 1} - {factor} * R{k + 1}\n"
                 self.steps[string] = [a.copy(), b.copy()]
@@ -92,6 +82,7 @@ class NumericalMethods:
     def pivotWithScaling(self, a, b, s, k):
         n = a[0].size
         p = k
+
         dummy = 0
         big = abs(a[k][k] / s[k])
         for i in range(k + 1, n):
@@ -110,8 +101,6 @@ class NumericalMethods:
             b[p], b[k] = b[k], b[p]
             s[p], s[k] = s[k], s[p]
 
-            print(a, )
-            print(f"R{k + 1} <-> R{p + 1}\n")
             string = f"R{k + 1} <-> R{p + 1}\n"
             self.steps[string] = [a.copy(), b.copy()]
 
@@ -131,6 +120,4 @@ class NumericalMethods:
                 a[k][j], a[p][j] = a[p][j], a[k][j]
             b[p], b[k] = b[k], b[p]
 
-            print(f"R{k + 1} <-> R{p + 1}\n")
-            string = f"R{k + 1} <-> R{p + 1}\n"
             self.steps[string] = [a.copy(), b.copy()]

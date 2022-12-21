@@ -21,6 +21,7 @@ class LU:
         self.croutlower = [[0 for x in range(n)] for y in range(n)]
         self.croutupper = [[0 for x in range(n)] for y in range(n)]
         self.steps = {}
+        self.SUB = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
 
     def ManageLU(self):
 
@@ -32,10 +33,10 @@ class LU:
             elif self.type == "Cholesky Form":
                 self.luCholesky_Decomposition()
         except:
-            self.x = "Invalid"
+            self.x = "Singular"
+            self.steps = {}
 
     def luDoolittleDecomposition(self):
-
 
         for i in range(self.n):
 
@@ -63,8 +64,8 @@ class LU:
                                                                      (self.a[k][i] - sum) / self.doolittleupper[i][i])
                     print(self.doolittlelower)
 
-            self.steps["L" + str(i)] = self.doolittlelower.copy()
-            self.steps["U" + str(i)] = self.doolittleupper.copy()
+            self.steps["L" + str(i).translate(self.SUB)] = self.doolittlelower.copy()
+            self.steps["U" + str(i).translate(self.SUB)] = self.doolittleupper.copy()
 
         self.l = self.doolittlelower
         self.u = self.doolittleupper
@@ -91,8 +92,7 @@ class LU:
                         self.choleskylower[i][j] = Precision.sigFigures(self.sig,
                                                                         (self.a[i][j] - sum1) / self.choleskylower[j][
                                                                             j])
-            self.steps["L" + str(i)] = self.choleskylower.copy()
-
+            self.steps["L" + str(i).translate(self.SUB)] = self.choleskylower.copy()
 
         for i in range(self.n):
             for j in range(self.n):
@@ -120,8 +120,8 @@ class LU:
                     self.croutlower[j][j] = e - 40
                 self.croutupper[j][i] = Precision.sigFigures(self.sig, tempU / self.croutlower[j][j])
 
-            self.steps["L" + str(i)] = self.croutlower.copy()
-            self.steps["U" + str(i)] = self.croutupper.copy()
+            self.steps["L" + str(j).translate(self.SUB)] = self.croutlower.copy()
+            self.steps["U" + str(j).translate(self.SUB)] = self.croutupper.copy()
 
         self.l = self.croutlower
         self.u = self.croutupper
@@ -157,5 +157,7 @@ class LU:
     def eliminate(self, l, u):
 
         y = self.eliminateL(l)
+        self.steps["Y"] = y
         z = self.eliminateU(u, y)
+        self.steps["Z"] = z
         self.x = z
