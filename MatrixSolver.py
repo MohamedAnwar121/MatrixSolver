@@ -178,6 +178,14 @@ class GUI(QMainWindow):
         self.proceedeqnbtn.setObjectName("proceedeqnbtn")
         self.proceedeqnbtn.clicked.connect(self.proceedbtnEqn)
 
+        self.backButtone = QtWidgets.QPushButton(self.equations)
+        self.backButtone.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButtone.setFont(font)
+        self.backButtone.setObjectName("backButton")
+        self.backButtone.clicked.connect(self.backButtonShowMenu)
+
         # steps
         self.steps = QtWidgets.QFrame(self.centralwidget)
         self.steps.setGeometry(QtCore.QRect(0, 0, 1200, 800))
@@ -186,6 +194,9 @@ class GUI(QMainWindow):
         self.steps.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.steps.setFrameShadow(QtWidgets.QFrame.Raised)
         self.steps.setObjectName("steps")
+
+
+
 
         self.scrollArea = QtWidgets.QScrollArea(self.steps)
         self.scrollArea.setGeometry(QtCore.QRect(0, 0, 1200, 800))
@@ -242,6 +253,14 @@ class GUI(QMainWindow):
         self.resultslabel.setAlignment(QtCore.Qt.AlignCenter)
         self.resultslabel.setObjectName("resultslabel")
 
+        self.backButton = QtWidgets.QPushButton(self.Results)
+        self.backButton.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButton.setFont(font)
+        self.backButton.setObjectName("backButton")
+        self.backButton.clicked.connect(self.backButtonShowMenu)
+
         # Lu select frame
         self.LuSelectFrame = QtWidgets.QFrame(self.centralwidget)
         self.LuSelectFrame.setGeometry(QtCore.QRect(0, 0, 1200, 800))
@@ -277,6 +296,15 @@ class GUI(QMainWindow):
         self.proceedbtn_2.setFont(font)
         self.proceedbtn_2.setObjectName("proceedbtn_2")
         self.proceedbtn_2.clicked.connect(self.showResults)
+
+
+        self.backButtonlu = QtWidgets.QPushButton(self.LuSelectFrame)
+        self.backButtonlu.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButtonlu.setFont(font)
+        self.backButtonlu.setObjectName("backButton")
+        self.backButtonlu.clicked.connect(self.backButtonShowMenu)
 
         self.iterativeParameters = QtWidgets.QFrame(self.centralwidget)
         self.iterativeParameters.setGeometry(QtCore.QRect(0, 0, 1200, 800))
@@ -327,6 +355,15 @@ class GUI(QMainWindow):
         self.proceedbtn_3.setFont(font)
         self.proceedbtn_3.setObjectName("proceedbtn_3")
         self.proceedbtn_3.clicked.connect(self.showResults)
+
+        self.backButtoni = QtWidgets.QPushButton(self.iterativeParameters)
+        self.backButtoni.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButtoni.setFont(font)
+        self.backButtoni.setObjectName("backButton")
+        self.backButtoni.clicked.connect(self.backButtonShowMenu)
+
 
         self.gridLayoutWidget = QtWidgets.QWidget(self.iterativeParameters)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(90, 480, 1051, 101))
@@ -397,6 +434,13 @@ class GUI(QMainWindow):
         self.relativeErrolabel.setText(_translate("MainWindow", "Absolute relative error:"))
         self.initialGuesslabel.setText(_translate("MainWindow", "Initial guess:"))
         self.proceedbtn_3.setText(_translate("MainWindow", "Proceed"))
+        self.backButton.setText(_translate("MainWindow", "Back to menu"))
+        self.backButtonlu.setText(_translate("MainWindow", "Back to menu"))
+        self.backButtoni.setText(_translate("MainWindow", "Back to menu"))
+        self.backButtone.setText(_translate("MainWindow", "Back to menu"))
+
+    def backButtonShowMenu(self):
+        self.setupUi()
 
     def btnToggle(self):
         self.scalingState = not self.scalingState
@@ -516,7 +560,14 @@ class GUI(QMainWindow):
                 self.newLabel.setText(result)
                 self.verticalLayout.addWidget(self.newLabel)
 
-
+        self.backButton2 = QtWidgets.QPushButton()
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButton2.setFont(font)
+        self.backButton2.setObjectName("backButton")
+        self.backButton2.setText("Back to menu")
+        self.backButton2.clicked.connect(self.backButtonShowMenu)
+        self.verticalLayout.addWidget(self.backButton2)
         self.steps.raise_()
 
     def showResults(self):
@@ -596,7 +647,7 @@ class GUI(QMainWindow):
         if isinstance(x, str):
             label = QLabel()
             font = label.font()
-            font.setPointSize(30)
+            font.setPointSize(20)
             label.setFont(font)
             label.setScaledContents(False)
             label.setAlignment(QtCore.Qt.AlignCenter)
