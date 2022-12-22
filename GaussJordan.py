@@ -25,7 +25,7 @@ class GaussJordan:
 
             # partial pivoting
             if scaling:
-                if np.fabs(s[i]) < 1e-18:
+                if np.fabs(s[k]) < 1e-18:
                     x = a[k, k]
                 else:
                     x = a[k, k] / s[k]
@@ -57,10 +57,8 @@ class GaussJordan:
 
             # dividing all row elements by pivot
             pivot = a[k, k]
-            if np.fabs(pivot) < 1e-18 and np.fabs(b[k]) < 1e-18:
-                return "Infinite"
-            elif np.fabs(pivot) < 1e-18 and np.fabs(b[k]) >= 1e-18:
-                return "Invalid"
+            if np.fabs(pivot) < 1e-18:
+                continue
             for j in range(n):
                 a[k, j] = Precision.sigFigures(sigfig, a[k, j] / pivot)
             b[k] = Precision.sigFigures(sigfig, b[k] / pivot)

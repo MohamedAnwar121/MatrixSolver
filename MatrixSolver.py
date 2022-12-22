@@ -685,7 +685,6 @@ class GUI(QMainWindow):
     def proceedbtnLU(self):
         self.showResults()
 
-
     def drawEqns(self, numOfEqn):
         temp = 0
         self.grid = QtWidgets.QGridLayout()

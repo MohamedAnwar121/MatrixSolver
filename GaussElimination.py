@@ -5,6 +5,7 @@ from Precision import *
 class GaussElimination:
 
     def __init__(self, a, b, scaling, precision, tol=1e-18):
+        self.SUB = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
         self.result = self.gaussElimination(a, b, scaling, precision, tol=1e-18)
 
     def gaussElimination(self, a, b, scaling, precision, tol=1e-18):
@@ -20,7 +21,7 @@ class GaussElimination:
 
         self.eliminate(a, b, x, s, tol, scaling)
 
-        temp = self.substitute(a, b, x)
+        temp = self.substitute(a, b, s, x)
         if isinstance(temp, str):
             return temp
 
@@ -43,22 +44,29 @@ class GaussElimination:
             else:
                 self.pivotWithoutScaling(a, b, k)
 
-            if a[k][k] < tol:
+            temp = k
+
+            while a[k][temp] < tol and temp < n - 1:
+                temp += 1
+
+            if a[k][temp] < tol:
                 continue
 
             for i in range(k + 1, n):
 
-                factor = Precision.sigFigures(self.sigFig, a[i][k] / a[k][k])
+                factor = Precision.sigFigures(self.sigFig, a[i][temp] / a[k][temp])
 
-                for j in range(k, n):
+                for j in range(temp, n):
                     a[i][j] -= Precision.sigFigures(self.sigFig, a[k][j] * factor)
                 b[i] = Precision.sigFigures(self.sigFig, b[i] - factor * b[k])
 
-                string = f"R{i + 1} = R{i + 1} - {factor} * R{k + 1}\n"
+                # string = f"R{i + 1} = R{i + 1} - {factor} * R{k + 1}\n"
+                string = "R" + str(i + 1).translate(self.SUB) + " = R" + str(i + 1).translate(self.SUB) + " - " + \
+                         str(factor) + " * R" + str(k + 1).translate(self.SUB) + "\n"
+
                 self.steps[string] = [a.copy(), b.copy()]
 
-
-    def substitute(self, a, b, x):
+    def substitute(self, a, b, s, x):
         n = a[0].size
 
         if a[n - 1][n - 1] == 0 and b[n - 1] == 0:
@@ -72,10 +80,21 @@ class GaussElimination:
             for j in range(i + 1, n):
                 sm += Precision.sigFigures(self.sigFig, a[i][j] * x[j])
 
-            if a[i][i] == 0 and b[i] == 0:
-                return "Infinite"
-            elif a[i][i] == 0:
-                return "Invalid"
+            # s = 0 , b != 0 invalid
+            # s = 0 , b = 0 infinite
+            # s != 0, b = 0 infinite
+            # s != 0 , b != 0 infinite
+
+            if a[i][i] == 0:
+                if s[i] == 0 and b[i] != 0:
+                    return "Invalid"
+                else:
+                    return "Infinite"
+
+            # if (a[i][i] == 0 and b[i] == 0):
+            #     return "Infinite"
+            # elif a[i][i] == 0:
+            #     return "Invalid"
 
             x[i] = Precision.sigFigures(self.sigFig, (b[i] - sm) / a[i][i])
 
@@ -101,7 +120,8 @@ class GaussElimination:
             b[p], b[k] = b[k], b[p]
             s[p], s[k] = s[k], s[p]
 
-            string = f"R{k + 1} <-> R{p + 1}\n"
+            # string = f"R{k + 1} <-> R{p + 1}\n"
+            string = "R" + str(k + 1).translate(self.SUB) + " <-> R" + str(p + 1).translate(self.SUB) + "\n"
             self.steps[string] = [a.copy(), b.copy()]
 
     def pivotWithoutScaling(self, a, b, k):
@@ -120,4 +140,5 @@ class GaussElimination:
                 a[k][j], a[p][j] = a[p][j], a[k][j]
             b[p], b[k] = b[k], b[p]
 
+            string = "R" + str(k + 1).translate(self.SUB) + " <-> R" + str(p + 1).translate(self.SUB) + "\n"
             self.steps[string] = [a.copy(), b.copy()]
