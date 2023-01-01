@@ -15,8 +15,6 @@ class secantmethod:
         self.N = iter
         self.exp = "secantmethod.f = lambda self,x : " + exp
         exec(self.exp)
-        self.steps["initial guess 1"] = initial_guess1
-        self.steps["initial guess 2"] = initial_guess2
 
     def func(self, x):
         res = self.f(x)
@@ -39,6 +37,7 @@ class secantmethod:
 
                 x2 = Precision.sigFigures(self.sigfig, (x0 - (x1 - x0) * self.func(x0) / (self.func(x1) - self.func(x0))))
                 print(f'Iteration-{step}, x2 = {x2} and f(x2) = {self.func(x2)} , EPS = {(x2 - x1) / x2}')
+                self.steps[f'iteration {step}'] = [x0, x1, x2]
                 x0 = x1
                 x1 = x2
                 step = step + 1
