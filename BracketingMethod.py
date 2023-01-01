@@ -15,8 +15,7 @@ class BracketingMethod:
         self.xu = xu
         self.exp = "BracketingMethod.f = lambda self,x : "+ exp
         exec(self.exp)
-        self.result = 0 
-
+        
     def func(self,x):
         res =  self.f(x)
         if res == inf:
@@ -29,15 +28,15 @@ class BracketingMethod:
         xr_old = 0
         Fxl = self.func(self.xl)
         Fxu = self.func(self.xu)
+        self.steps ['iteration 0'] = [self.xl, self.xu]
         if Fxl * Fxu > 0: 
             return 'No root in this interval'
-        for i in range(self.iterations):
+        for i in range(self.nIteration):
             xr_old = xr
             xr = (self.xl + self.xu) / 2
             if i > 0:
-                if xr<1e-18:
-                    return 'No root in this interval'
-                ea = abs((xr - xr_old)/xr)
+               if xr != 0:
+                    ea = abs((xr - xr_old)/xr)
             Fxr = self.func(xr)
             Fxl = self.func(self.xl)
             Fxu = self.func(self.xu)
@@ -47,7 +46,7 @@ class BracketingMethod:
                 self.xl = xr
             else:
                 break
-
+            self.steps[f'iteration {i+1}'] = [self.xl, self.xu, xr]
             if ea < self.es and i > 0:
                 break
         return xr
@@ -59,21 +58,19 @@ class BracketingMethod:
         xr_old = 0       
         Fxl = self.func(self.xl)
         Fxu = self.func(self.xu)
+        self.steps ['iteration 0'] = [self.xl, self.xu]
         if Fxl * Fxu > 0:
             return  'No root in this interval' 
-        for i in range(self.iterations):
+        for i in range(self.nIteration):
             xr_old = xr
             xr = (self.xl*Fxu-self.xu*Fxl)/(Fxu-Fxl)
             if i > 0:
-                if xr<1e-18:
-                    return 'No root in this interval'
-                ea = abs((xr - xr_old)/xr)
+                if xr != 0:
+                    ea = abs((xr - xr_old)/xr)
             Fxr = self.func(xr)
             Fxl = self.func(self.xl)
             Fxu = self.func(self.xu)
-            print('xl: '+ format(xl,".6f") +"| f(xl): "+format(f_xl,".6f")+'| xu: '+
-            format(xu,".6f")+"| f(xu): "+format(f_xu,".6f")+'| xr: '+format(xr,".6f")+
-            "| f(xr): "+format(f_xr,".6f"))
+        
             if Fxr<0:
                 self.xl = xr_old
             elif Fxr >0:
@@ -85,6 +82,7 @@ class BracketingMethod:
                 return "false position method fails"
             if ea < self.es and i > 0:
                 break
+            self.steps[f'iteration {i+1}'] = [self.xl, self.xu, xr]
         return xr
     
     def manager(self,function):
@@ -96,9 +94,3 @@ class BracketingMethod:
         except:
             return "can't find root"
 
-if __name__ == '__main__':
-
-   b = BracketingMethod(3,0,0,exp="x**2")
-   print(b.func(4))
-    
-   pass
