@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC 
 from Precision import *
 
 
@@ -27,7 +27,7 @@ class IterativeMethods:
         return True
 
     # get the max error in x
-    @abstractmethod
+    @staticmethod
     def calc_error(x_new, x):
         e = -1
         for i in range(0, len(x)):
