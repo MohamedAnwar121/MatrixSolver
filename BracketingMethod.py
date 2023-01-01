@@ -26,6 +26,8 @@ class BracketingMethod:
         xr_old = 0
         Fxl = self.func(self.xl)
         Fxu = self.func(self.xu)
+        xlold=self.xl
+        xuold=self.xu
         # self.steps['iteration 0'] = [self.xl, self.xu]
         if Fxl * Fxu > 0:
             return 'No root in this interval'
@@ -44,7 +46,7 @@ class BracketingMethod:
                 self.xl = xr
             else:
                 break
-            self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr]
+            self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr,xlold,xuold]
             if ea < self.es and i > 0:
                 break
         return xr
@@ -54,6 +56,8 @@ class BracketingMethod:
         xr = 0
         ea = 0
         xr_old = 0
+        xlold=self.xl
+        xuold=self.xu
         Fxl = self.func(self.xl)
         Fxu = self.func(self.xu)
         # self.steps['iteration 0'] = [self.xl, self.xu]
@@ -85,7 +89,7 @@ class BracketingMethod:
                 return "false position method fails"
             if ea < self.es and i > 0:
                 break
-            self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr]
+            self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr,xlold,xuold]
         return xr
 
     def manager(self, function):

@@ -820,6 +820,7 @@ class GUI(QMainWindow):
 
     def showStepsRoot(self):
         precision = int(self.precisionbox_2.currentText())
+        expression = self.eqnin.text()
         operation = self.rootopbox.currentText()
         if operation == "Fixed point iteration" or operation == "Newton Raphson":
             for i in self.stepsDic:
@@ -845,10 +846,14 @@ class GUI(QMainWindow):
                 xl=ll[0]
                 xu=ll[1]
                 xr=ll[2]
+                xlold=ll[3]
+                xuold=ll[4]
                 result = ""
                 result += f'{i} , xl= {xl} , xu= {xu} , xr= {xr}'
                 self.newLabel.setText(result)
+                p=Plot.plotBisection(expression,xlold,xrold,xr,xl,xu)
                 self.verticalLayout.addWidget(self.newLabel)
+                self.verticalLayout.addWidget(p)
         else:
             for i in self.stepsDic:
                 self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
