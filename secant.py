@@ -33,9 +33,9 @@ class secantmethod:
             step = 1
             condition = True
             while condition:
-                if self.func(x0) - self.func(x1) < 1e-18:
+                if self.func(x0) == self.func(x1):
                     print('Divide by zero error!')
-                    break
+                    return "can't find root"
 
                 x2 = Precision.sigFigures(self.sigfig, (x0 - (x1 - x0) * self.func(x0) / (self.func(x1) - self.func(x0))))
                 print(f'Iteration-{step}, x2 = {x2} and f(x2) = {self.func(x2)} , EPS = {(x2 - x1) / x2}')
@@ -45,10 +45,20 @@ class secantmethod:
 
                 if step > self.N:
                     print('Not Convergent!')
-                    break
+                    return "can't find root"
 
+                print(abs((x1 - x0) / x1))
                 condition = abs((x1 - x0) / x1) > e
             print(f'\n Required root is: {x2}')
+            return x2
 
         except:
             return "can't find root"
+
+x0 = float(0.5)
+x1 = float(1)
+e = float(5 / 100)
+# N = int()
+s=secantmethod("x**2-2",x0,x1,e)
+# Starting Secant Method
+print(s.secant())

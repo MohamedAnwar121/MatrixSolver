@@ -13,6 +13,7 @@ class fixedPoint:
         self.sig = noOfSig
         self.errorTolerance = tolerance
         self.nIteration = iter
+        self.root = initial_guess
         self.exp = "fixedPoint.f = lambda self,x : " + exp
         exec(self.exp)
         self.steps["initial guess"] = initial_guess
@@ -27,31 +28,32 @@ class fixedPoint:
 
         try:
             xr = copy.copy(self.x)
-            xr_old = 0;
 
             for i in range(self.nIteration):
                 xr_old = copy.copy(xr)
                 xr = self.func(xr_old)
-                print(xr)
-                self.steps["iteration " + str(i)] = copy.copy(xr)
+                self.steps["iteration " + str(i+1)] = copy.copy(xr)
 
                 if xr != 0:
                     ea = abs((xr - xr_old) / xr)
 
                     if ea <= self.errorTolerance:
+                        self.root = xr
                         self.steps["root: "] = copy.copy(xr)
-                        return;
+                        return
 
+            self.root = xr
             self.steps["root: "] = copy.copy(xr)
 
         except:
-            return "can't find root"
+            self.root = "can't find root"
+            return
 
-# if name == "__main__":
+# if __name__ == "__main__":
 
-#     ob = fixedPoint("1 / sqrt(1+x)",1,6)
+#     ob = fixedPoint("1 + x / sqrt(200 + x)",1,6)
 #     ob.fixedPt()
-#     print(ob.steps)
+#     print(ob.root)
 
 
 # x = np.linspace(-5,5,100)

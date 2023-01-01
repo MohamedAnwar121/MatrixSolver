@@ -1,9 +1,10 @@
 import pyqtgraph as pg
- 
+
+
 class Plot:
-    
+
     @staticmethod
-    def plotBisection(f, xl, xu, newXl, newXu):
+    def plotBisection(f, xl, xu, newXr, newXl, newXu):
         graphWidget = pg.PlotWidget()
         boundry_scale = abs((f(xl) - f(xu)) / 5)
         print(boundry_scale)
@@ -24,5 +25,8 @@ class Plot:
         graphWidget.plot(x, y, pen=pen)
         y = [f(newXl) - boundry_scale, f(newXu) + boundry_scale]
         x = [newXu, newXu]
+        graphWidget.plot(x, y, pen=pen)
+        y = [f(newXl) - boundry_scale, f(newXu) + boundry_scale]
+        x = [newXr, newXr]
         graphWidget.plot(x, y, pen=pen)
         return graphWidget

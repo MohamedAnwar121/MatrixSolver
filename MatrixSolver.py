@@ -4,6 +4,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import *
 import numpy as np
+
+from fixedPoint import *
+from NewtonRaphsonClass import *
+from BracketingMethod import BracketingMethod
 from GaussElimination import *
 from GaussJordan import *
 from LUDecomposition import *
@@ -12,6 +16,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from Precision import *
 import sys
+
+from secant import secantmethod
 
 
 class GUI(QMainWindow):
@@ -277,7 +283,7 @@ class GUI(QMainWindow):
         font.setPointSize(20)
         self.proceedrootbtn.setFont(font)
         self.proceedrootbtn.setObjectName("proceedrootbtn")
-        # self.proceedrootbtn.clicked.connect()
+        self.proceedrootbtn.clicked.connect(self.gotooperation)
         self.eqnin = QtWidgets.QLineEdit(self.rootscreen)
         self.eqnin.setGeometry(QtCore.QRect(480, 110, 681, 61))
         self.eqnin.setStyleSheet("background-color: rgb(255, 255, 255);\n"
@@ -365,6 +371,7 @@ class GUI(QMainWindow):
         font.setPointSize(20)
         self.proceedfalsibtn.setFont(font)
         self.proceedfalsibtn.setObjectName("proceedfalsibtn")
+        self.proceedfalsibtn.clicked.connect(self.rootresult)
         self.backButtonfalsi = QtWidgets.QPushButton(self.bisectionfalsi)
         self.backButtonfalsi.setGeometry(QtCore.QRect(50, 670, 231, 71))
         font = QtGui.QFont()
@@ -410,6 +417,7 @@ class GUI(QMainWindow):
         font.setPointSize(20)
         self.proceedsecantbtn.setFont(font)
         self.proceedsecantbtn.setObjectName("proceedsecantbtn")
+        self.proceedsecantbtn.clicked.connect(self.rootresult)
         self.backButtonsecant = QtWidgets.QPushButton(self.secant)
         self.backButtonsecant.setGeometry(QtCore.QRect(50, 670, 231, 71))
         font = QtGui.QFont()
@@ -444,6 +452,7 @@ class GUI(QMainWindow):
         font.setPointSize(20)
         self.proceedfixedbtn.setFont(font)
         self.proceedfixedbtn.setObjectName("proceedfixedbtn")
+        self.proceedfixedbtn.clicked.connect(self.rootresult)
         self.backButtonfixed = QtWidgets.QPushButton(self.fixedpointnewton)
         self.backButtonfixed.setGeometry(QtCore.QRect(50, 670, 231, 71))
         font = QtGui.QFont()
@@ -526,6 +535,46 @@ class GUI(QMainWindow):
         self.backButton.setObjectName("backButton")
         self.backButton.clicked.connect(self.backButtonShowMenu)
         #############################################################################
+
+        # resultroot
+        self.Results_2 = QtWidgets.QFrame(self.centralwidget)
+        self.Results_2.setGeometry(QtCore.QRect(0, 0, 1200, 800))
+        self.Results_2.setStyleSheet("background-color: rgb(46, 52, 54);\n"
+                                     "color: \"white\";")
+        self.Results_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Results_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Results_2.setObjectName("Results_2")
+
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.Results_2)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(200, 130, 791, 511))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.ResultsLayout_2 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.ResultsLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.ResultsLayout_2.setObjectName("verticalLayout")
+
+        self.stepsbtn_2 = QtWidgets.QPushButton(self.Results_2)
+        self.stepsbtn_2.setGeometry(QtCore.QRect(920, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.stepsbtn_2.setFont(font)
+        self.stepsbtn_2.setObjectName("stepsbtn_2")
+        self.stepsbtn_2.clicked.connect(self.showStepsRoot)
+        self.resultslabel_2 = QtWidgets.QLabel(self.Results_2)
+        self.resultslabel_2.setGeometry(QtCore.QRect(480, 40, 221, 91))
+        font = QtGui.QFont()
+        font.setPointSize(30)
+        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
+        self.resultslabel_2.setFont(font)
+        self.resultslabel_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.resultslabel_2.setObjectName("resultslabel_2")
+
+        self.backButton2 = QtWidgets.QPushButton(self.Results_2)
+        self.backButton2.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButton2.setFont(font)
+        self.backButton2.setObjectName("backButton")
+        self.backButton2.clicked.connect(self.backButtonShowMenu)
 
         # Lu select frame
         self.LuSelectFrame = QtWidgets.QFrame(self.centralwidget)
@@ -744,18 +793,189 @@ class GUI(QMainWindow):
         self.label_8.setText(_translate("MainWindow", "Enter the initial guess (x₀):"))
         self.proceedfixedbtn.setText(_translate("MainWindow", "Proceed"))
         self.backButtonroot.setText(_translate("MainWindow", "Back to menu"))
+        self.backButton2.setText(_translate("MainWindow", "Back to menu"))
         self.backButtonsecant.setText(_translate("MainWindow", "Back to menu"))
         self.backButtonfalsi.setText(_translate("MainWindow", "Back to menu"))
         self.backButtonfixed.setText(_translate("MainWindow", "Back to menu"))
+        self.stepsbtn_2.setText(_translate("MainWindow", "show steps"))
+        self.resultslabel_2.setText(_translate("MainWindow", "Results"))
 
     def backButtonShowMenu(self):
         self.setupUi()
+
+    def gotooperation(self):
+        operation = self.rootopbox.currentText()
+        if operation == "Bisection" or operation == "False position (Regular-falsi)":
+            self.bisectionfalsi.raise_()
+        elif operation == "Fixed point iteration" or operation == "Newton Raphson":
+            self.fixedpointnewton.raise_()
+        else:
+            self.secant.raise_()
 
     def gotomain(self):
         self.MainFrame.raise_()
 
     def gotoroot(self):
         self.rootscreen.raise_()
+
+    def showStepsRoot(self):
+        precision = int(self.precisionbox_2.currentText())
+        operation = self.rootopbox.currentText()
+        if operation == "Fixed point iteration" or operation == "Newton Raphson":
+            for i in self.stepsDic:
+                self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+                self.newLabel.setFont(QFont("Tahoma", 15))
+                self.newLabel.setScaledContents(False)
+                self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
+
+                ll = self.stepsDic[i]
+                result = ""
+                result += f'{i} , xr= {ll}'
+                self.newLabel.setText(result)
+                self.verticalLayout.addWidget(self.newLabel)
+        elif operation == "Bisection" or operation == "False position (Regular-falsi)":
+            for i in self.stepsDic:
+                self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+                self.newLabel.setFont(QFont("Tahoma", 15))
+                self.newLabel.setScaledContents(False)
+                self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
+
+                ll = self.stepsDic[i]
+                print(ll)
+                xl=ll[0]
+                xu=ll[1]
+                xr=ll[2]
+                result = ""
+                result += f'{i} , xl= {xl} , xu= {xu} , xr= {xr}'
+                self.newLabel.setText(result)
+                self.verticalLayout.addWidget(self.newLabel)
+        else:
+            for i in self.stepsDic:
+                self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+                self.newLabel.setFont(QFont("Tahoma", 15))
+                self.newLabel.setScaledContents(False)
+                self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
+
+                ll = self.stepsDic[i]
+                print(ll)
+                x0=ll[0]
+                x1=ll[1]
+                x2=ll[2]
+                result = ""
+                result += f'{i} , x0= {x0} , x1= {x1} , x2= {x2}'
+                self.newLabel.setText(result)
+                self.verticalLayout.addWidget(self.newLabel)
+
+
+        self.backButton3 = QtWidgets.QPushButton()
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButton3.setFont(font)
+        self.backButton3.setObjectName("backButton")
+        self.backButton3.setText("Back to menu")
+        self.backButton3.clicked.connect(self.backButtonShowMenu)
+        self.verticalLayout.addWidget(self.backButton2)
+        self.steps.raise_()
+        self.steps.raise_()
+    def rootresult(self):
+        global x
+        x = None
+        expression = self.eqnin.text()
+        strError = self.epsin.text()
+        errortol = None
+        n = self.iterationsin.text()
+        precision = int(self.precisionbox_2.currentText())
+        operation = self.rootopbox.currentText()
+        if strError == '':
+            errortol = 0.00001
+            strError = "0"
+        elif strError[0] == 'e':
+            strError = "1" + strError
+            errortol = float(strError)
+        else:
+            errortol = float(strError)
+        if n == '':
+            n = 50
+        n = int(n)
+        start = time.time()  # start runtime of the functions
+        if operation == "Bisection" or operation == "False position (Regular-falsi)":
+            xl = self.xlin.text()
+            if xl == "":
+                xl = 0
+            xu = self.xuin.text()
+            if xu == "":
+                xu = 0
+            xl = float(xl)
+            xu = float(xu)
+            b = BracketingMethod(precision, xl, xu, expression, errortol, n)
+            if operation == "Bisection":
+                x = b.bisection()
+                self.stepsDic = b.steps
+            else:
+                print(precision, xl, xu, expression, errortol, n)
+                x = b.falsePosition()
+                self.stepsDic = b.steps
+                print(x)
+
+        elif operation == "Fixed point iteration" or operation == "Newton Raphson":
+            x0 = self.x0in_2.text()
+            if x0 == "":
+                x0 = 0
+            x0 = float(x0)
+            if operation == "Fixed point iteration":
+                ob = fixedPoint(expression, x0, precision, errortol, n)
+                ob.fixedPt()
+                x = ob.root
+                self.stepsDic = ob.steps
+            else:
+                ob = NewtonRaphsonClass(expression, x0, precision, errortol, n)
+                ob.newtonRaphson()
+                x = ob.root
+                self.stepsDic = ob.steps
+
+        elif operation == "Secant":
+            x0 = self.x0in.text()
+            if x0 == "":
+                x0 = 0
+            x0 = float(x0)
+            x1 = self.x1in.text()
+            if x1 == "":
+                x1 = 0
+            x1 = float(x1)
+            print(expression, x0, x1, precision, errortol, n)
+            s = secantmethod(expression, x0, x1, precision, errortol, n)
+            x = s.secant()
+            self.stepsDic = s.steps
+
+        if isinstance(x, str):
+            label = QLabel()
+            font = label.font()
+            font.setPointSize(20)
+            label.setFont(font)
+            label.setScaledContents(False)
+            label.setAlignment(QtCore.Qt.AlignCenter)
+            label.setText("Root is not found")
+            self.ResultsLayout_2.addWidget(label)
+            self.Results_2.raise_()
+            return
+        label = QLabel(f"Root = {x}")
+        font = label.font()
+        font.setPointSize(30)
+        label.setFont(font)
+        label.setScaledContents(False)
+        label.setAlignment(QtCore.Qt.AlignCenter)
+        self.ResultsLayout_2.addWidget(label)
+
+        end = time.time()
+        label = QLabel("Runtime = " + str(float(round((end - start) * (10 ** 3), 7))) + " ms")
+        font = label.font()
+        font.setPointSize(20)
+        label.setFont(font)
+        label.setScaledContents(False)
+        label.setAlignment(QtCore.Qt.AlignCenter)
+        self.ResultsLayout_2.addWidget(label)
+
+        self.Results_2.raise_()
 
     def btnToggle(self):
         self.scalingState = not self.scalingState
@@ -875,13 +1095,13 @@ class GUI(QMainWindow):
                 self.newLabel.setText(result)
                 self.verticalLayout.addWidget(self.newLabel)
 
-        self.backButton2 = QtWidgets.QPushButton()
+        self.backButton3 = QtWidgets.QPushButton()
         font = QtGui.QFont()
         font.setPointSize(20)
-        self.backButton2.setFont(font)
-        self.backButton2.setObjectName("backButton")
-        self.backButton2.setText("Back to menu")
-        self.backButton2.clicked.connect(self.backButtonShowMenu)
+        self.backButton3.setFont(font)
+        self.backButton3.setObjectName("backButton")
+        self.backButton3.setText("Back to menu")
+        self.backButton3.clicked.connect(self.backButtonShowMenu)
         self.verticalLayout.addWidget(self.backButton2)
         self.steps.raise_()
 
