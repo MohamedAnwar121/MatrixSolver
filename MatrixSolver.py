@@ -161,6 +161,7 @@ class GUI(QMainWindow):
         self.proceedbtn.raise_()
         self.scalingbtn.raise_()
         self.operation.raise_()
+        ##################################################
 
         self.equations = QtWidgets.QFrame(self.centralwidget)
         self.equations.setGeometry(QtCore.QRect(0, 0, 1200, 800))
@@ -185,6 +186,272 @@ class GUI(QMainWindow):
         self.backButtone.setFont(font)
         self.backButtone.setObjectName("backButton")
         self.backButtone.clicked.connect(self.backButtonShowMenu)
+        #############################################################################
+
+        # main
+        self.main = QtWidgets.QFrame(self.centralwidget)
+        self.main.setGeometry(QtCore.QRect(0, 0, 1200, 800))
+        self.main.setStyleSheet("background-color: rgb(46, 52, 54);\n"
+                                "color: \"white\";")
+        self.main.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.main.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.main.setObjectName("main")
+        self.lineareqnsbtn = QtWidgets.QPushButton(self.main)
+        self.lineareqnsbtn.setGeometry(QtCore.QRect(310, 200, 561, 151))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.lineareqnsbtn.setFont(font)
+        self.lineareqnsbtn.setObjectName("lineareqnsbtn")
+        self.lineareqnsbtn.clicked.connect(self.gotomain)
+        self.rootbtn = QtWidgets.QPushButton(self.main)
+        self.rootbtn.setGeometry(QtCore.QRect(310, 460, 561, 151))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.rootbtn.setFont(font)
+        self.rootbtn.setObjectName("rootbtn")
+        self.rootbtn.clicked.connect(self.gotoroot)
+        self.operationlabel = QtWidgets.QLabel(self.main)
+        self.operationlabel.setGeometry(QtCore.QRect(380, 40, 441, 61))
+        font = QtGui.QFont()
+        font.setPointSize(30)
+        self.operationlabel.setFont(font)
+        self.operationlabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.operationlabel.setObjectName("operationlabel")
+        #############################################################################
+
+        # rootscreen
+        self.rootscreen = QtWidgets.QFrame(self.centralwidget)
+        self.rootscreen.setGeometry(QtCore.QRect(0, 0, 1200, 800))
+        self.rootscreen.setStyleSheet("background-color: rgb(46, 52, 54);\n"
+                                      "color: \"white\";")
+        self.rootscreen.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.rootscreen.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.rootscreen.setObjectName("rootscreen")
+        self.eqnlabel_2 = QtWidgets.QLabel(self.rootscreen)
+        self.eqnlabel_2.setGeometry(QtCore.QRect(110, 110, 441, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.eqnlabel_2.setFont(font)
+        self.eqnlabel_2.setObjectName("eqnlabel_2")
+        self.precision_2 = QtWidgets.QLabel(self.rootscreen)
+        self.precision_2.setGeometry(QtCore.QRect(110, 210, 371, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.precision_2.setFont(font)
+        self.precision_2.setObjectName("precision_2")
+        self.operation_2 = QtWidgets.QLabel(self.rootscreen)
+        self.operation_2.setGeometry(QtCore.QRect(110, 320, 371, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.operation_2.setFont(font)
+        self.operation_2.setObjectName("operation_2")
+        self.precisionbox_2 = QtWidgets.QComboBox(self.rootscreen)
+        self.precisionbox_2.setGeometry(QtCore.QRect(760, 220, 151, 41))
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        self.precisionbox_2.setFont(font)
+        self.precisionbox_2.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                          "color: rgb(0, 0, 0);")
+        self.precisionbox_2.setObjectName("precisionbox_2")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.precisionbox_2.addItem("")
+        self.proceedrootbtn = QtWidgets.QPushButton(self.rootscreen)
+        self.proceedrootbtn.setGeometry(QtCore.QRect(950, 660, 181, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.proceedrootbtn.setFont(font)
+        self.proceedrootbtn.setObjectName("proceedrootbtn")
+        # self.proceedrootbtn.clicked.connect()
+        self.eqnin = QtWidgets.QLineEdit(self.rootscreen)
+        self.eqnin.setGeometry(QtCore.QRect(480, 110, 681, 61))
+        self.eqnin.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                 "color: rgb(0, 0, 0);")
+        self.eqnin.setText("")
+        self.eqnin.setObjectName("eqnin")
+        self.rootopbox = QtWidgets.QComboBox(self.rootscreen)
+        self.rootopbox.setGeometry(QtCore.QRect(720, 330, 241, 41))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.rootopbox.setFont(font)
+        self.rootopbox.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                     "color: rgb(0, 0, 0);")
+        self.rootopbox.setObjectName("rootopbox")
+        self.rootopbox.addItem("")
+        self.rootopbox.addItem("")
+        self.rootopbox.addItem("")
+        self.rootopbox.addItem("")
+        self.rootopbox.addItem("")
+        self.label_5 = QtWidgets.QLabel(self.rootscreen)
+        self.label_5.setGeometry(QtCore.QRect(110, 420, 341, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.label_5.setFont(font)
+        self.label_5.setObjectName("label_5")
+        self.iterationsin = QtWidgets.QLineEdit(self.rootscreen)
+        self.iterationsin.setGeometry(QtCore.QRect(780, 440, 113, 29))
+        self.iterationsin.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                        "color: rgb(0, 0, 0);")
+        self.iterationsin.setText("")
+        self.iterationsin.setObjectName("iterationsin")
+        self.label_6 = QtWidgets.QLabel(self.rootscreen)
+        self.label_6.setGeometry(QtCore.QRect(110, 520, 381, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.label_6.setFont(font)
+        self.label_6.setObjectName("label_6")
+        self.epsin = QtWidgets.QLineEdit(self.rootscreen)
+        self.epsin.setGeometry(QtCore.QRect(780, 540, 113, 29))
+        self.epsin.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                 "color: rgb(0, 0, 0);")
+        self.epsin.setObjectName("epsin")
+        self.backButtonroot = QtWidgets.QPushButton(self.rootscreen)
+        self.backButtonroot.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButtonroot.setFont(font)
+        self.backButtonroot.setObjectName("backButton")
+        self.backButtonroot.clicked.connect(self.backButtonShowMenu)
+        #############################################################################
+
+        # bisectionfalsi
+        self.bisectionfalsi = QtWidgets.QFrame(self.centralwidget)
+        self.bisectionfalsi.setGeometry(QtCore.QRect(0, 0, 1200, 800))
+        self.bisectionfalsi.setStyleSheet("background-color: rgb(46, 52, 54);\n"
+                                          "color: \"white\";")
+        self.bisectionfalsi.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.bisectionfalsi.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.bisectionfalsi.setObjectName("bisectionfalsi")
+        self.label_2 = QtWidgets.QLabel(self.bisectionfalsi)
+        self.label_2.setGeometry(QtCore.QRect(80, 150, 411, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.xlin = QtWidgets.QLineEdit(self.bisectionfalsi)
+        self.xlin.setGeometry(QtCore.QRect(560, 170, 113, 29))
+        self.xlin.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                "color: rgb(0, 0, 0);")
+        self.xlin.setObjectName("xlin")
+        self.label_3 = QtWidgets.QLabel(self.bisectionfalsi)
+        self.label_3.setGeometry(QtCore.QRect(80, 400, 421, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.label_3.setFont(font)
+        self.label_3.setObjectName("label_3")
+        self.xuin = QtWidgets.QLineEdit(self.bisectionfalsi)
+        self.xuin.setGeometry(QtCore.QRect(560, 420, 113, 29))
+        self.xuin.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                "color: rgb(0, 0, 0);")
+        self.xuin.setObjectName("xuin")
+        self.proceedfalsibtn = QtWidgets.QPushButton(self.bisectionfalsi)
+        self.proceedfalsibtn.setGeometry(QtCore.QRect(950, 660, 181, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.proceedfalsibtn.setFont(font)
+        self.proceedfalsibtn.setObjectName("proceedfalsibtn")
+        self.backButtonfalsi = QtWidgets.QPushButton(self.bisectionfalsi)
+        self.backButtonfalsi.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButtonfalsi.setFont(font)
+        self.backButtonfalsi.setObjectName("backButton")
+        self.backButtonfalsi.clicked.connect(self.backButtonShowMenu)
+        ###########################################################
+
+        # secant
+        self.secant = QtWidgets.QFrame(self.centralwidget)
+        self.secant.setGeometry(QtCore.QRect(0, 0, 1200, 800))
+        self.secant.setStyleSheet("background-color: rgb(46, 52, 54);\n"
+                                  "color: \"white\";")
+        self.secant.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.secant.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.secant.setObjectName("secant")
+        self.label_4 = QtWidgets.QLabel(self.secant)
+        self.label_4.setGeometry(QtCore.QRect(80, 150, 461, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.label_4.setFont(font)
+        self.label_4.setObjectName("label_4")
+        self.x0in = QtWidgets.QLineEdit(self.secant)
+        self.x0in.setGeometry(QtCore.QRect(750, 170, 113, 29))
+        self.x0in.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                "color: rgb(0, 0, 0);")
+        self.x0in.setObjectName("x0in")
+        self.label_7 = QtWidgets.QLabel(self.secant)
+        self.label_7.setGeometry(QtCore.QRect(80, 400, 531, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.label_7.setFont(font)
+        self.label_7.setObjectName("label_7")
+        self.x1in = QtWidgets.QLineEdit(self.secant)
+        self.x1in.setGeometry(QtCore.QRect(750, 420, 113, 29))
+        self.x1in.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                "color: rgb(0, 0, 0);")
+        self.x1in.setObjectName("x1in")
+        self.proceedsecantbtn = QtWidgets.QPushButton(self.secant)
+        self.proceedsecantbtn.setGeometry(QtCore.QRect(950, 660, 181, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.proceedsecantbtn.setFont(font)
+        self.proceedsecantbtn.setObjectName("proceedsecantbtn")
+        self.backButtonsecant = QtWidgets.QPushButton(self.secant)
+        self.backButtonsecant.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButtonsecant.setFont(font)
+        self.backButtonsecant.setObjectName("backButton")
+        self.backButtonsecant.clicked.connect(self.backButtonShowMenu)
+        ###########################################################
+
+        # fixedpointnewton
+        self.fixedpointnewton = QtWidgets.QFrame(self.centralwidget)
+        self.fixedpointnewton.setGeometry(QtCore.QRect(0, 0, 1200, 800))
+        self.fixedpointnewton.setStyleSheet("background-color: rgb(46, 52, 54);\n"
+                                            "color: \"white\";")
+        self.fixedpointnewton.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.fixedpointnewton.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.fixedpointnewton.setObjectName("fixedpointnewton")
+        self.label_8 = QtWidgets.QLabel(self.fixedpointnewton)
+        self.label_8.setGeometry(QtCore.QRect(120, 300, 461, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.label_8.setFont(font)
+        self.label_8.setObjectName("label_8")
+        self.x0in_2 = QtWidgets.QLineEdit(self.fixedpointnewton)
+        self.x0in_2.setGeometry(QtCore.QRect(760, 320, 113, 29))
+        self.x0in_2.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+                                  "color: rgb(0, 0, 0);")
+        self.x0in_2.setObjectName("x0in_2")
+        self.proceedfixedbtn = QtWidgets.QPushButton(self.fixedpointnewton)
+        self.proceedfixedbtn.setGeometry(QtCore.QRect(950, 660, 181, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.proceedfixedbtn.setFont(font)
+        self.proceedfixedbtn.setObjectName("proceedfixedbtn")
+        self.backButtonfixed = QtWidgets.QPushButton(self.fixedpointnewton)
+        self.backButtonfixed.setGeometry(QtCore.QRect(50, 670, 231, 71))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.backButtonfixed.setFont(font)
+        self.backButtonfixed.setObjectName("backButton")
+        self.backButtonfixed.clicked.connect(self.backButtonShowMenu)
+        #########################################################
 
         # steps
         self.steps = QtWidgets.QFrame(self.centralwidget)
@@ -194,9 +461,6 @@ class GUI(QMainWindow):
         self.steps.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.steps.setFrameShadow(QtWidgets.QFrame.Raised)
         self.steps.setObjectName("steps")
-
-
-
 
         self.scrollArea = QtWidgets.QScrollArea(self.steps)
         self.scrollArea.setGeometry(QtCore.QRect(0, 0, 1200, 800))
@@ -218,6 +482,7 @@ class GUI(QMainWindow):
         self.verticalLayout.setObjectName("verticalLayout")
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        #############################################################################
 
         # results
         self.Results = QtWidgets.QFrame(self.centralwidget)
@@ -260,6 +525,7 @@ class GUI(QMainWindow):
         self.backButton.setFont(font)
         self.backButton.setObjectName("backButton")
         self.backButton.clicked.connect(self.backButtonShowMenu)
+        #############################################################################
 
         # Lu select frame
         self.LuSelectFrame = QtWidgets.QFrame(self.centralwidget)
@@ -296,7 +562,6 @@ class GUI(QMainWindow):
         self.proceedbtn_2.setFont(font)
         self.proceedbtn_2.setObjectName("proceedbtn_2")
         self.proceedbtn_2.clicked.connect(self.showResults)
-
 
         self.backButtonlu = QtWidgets.QPushButton(self.LuSelectFrame)
         self.backButtonlu.setGeometry(QtCore.QRect(50, 670, 231, 71))
@@ -340,7 +605,6 @@ class GUI(QMainWindow):
         self.relativeErrorLineEdit.setObjectName("relativeErrorLineEdit")
         self.relativeErrorLineEdit.setValidator(QDoubleValidator(-0.9, 0.9, 50))
 
-
         self.initialGuesslabel = QtWidgets.QLabel(self.iterativeParameters)
         self.initialGuesslabel.setGeometry(QtCore.QRect(90, 380, 381, 71))
         font = QtGui.QFont()
@@ -364,7 +628,6 @@ class GUI(QMainWindow):
         self.backButtoni.setObjectName("backButton")
         self.backButtoni.clicked.connect(self.backButtonShowMenu)
 
-
         self.gridLayoutWidget = QtWidgets.QWidget(self.iterativeParameters)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(90, 480, 1051, 101))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
@@ -373,7 +636,8 @@ class GUI(QMainWindow):
         self.initialGuessgrid.setContentsMargins(0, 0, 0, 0)
         self.initialGuessgrid.setObjectName("initialGuessgrid")
 
-        self.MainFrame.raise_()
+        # self.MainFrame.raise_()
+        self.main.raise_()
 
         self.setCentralWidget(self.centralwidget)
         self.retranslateUi()
@@ -438,9 +702,60 @@ class GUI(QMainWindow):
         self.backButtonlu.setText(_translate("MainWindow", "Back to menu"))
         self.backButtoni.setText(_translate("MainWindow", "Back to menu"))
         self.backButtone.setText(_translate("MainWindow", "Back to menu"))
+        self.lineareqnsbtn.setText(_translate("MainWindow", "Solve System of linear equations"))
+        self.rootbtn.setText(_translate("MainWindow", "Root Finding"))
+        self.operationlabel.setText(_translate("MainWindow", "Choose operation"))
+        self.eqnlabel_2.setText(_translate("MainWindow", "Enter the equation:"))
+        self.precision_2.setText(_translate("MainWindow", "Enter the precision:"))
+        self.operation_2.setText(_translate("MainWindow", "Choose the operation:"))
+        self.precisionbox_2.setCurrentText(_translate("MainWindow", "3"))
+        self.precisionbox_2.setItemText(0, _translate("MainWindow", "3"))
+        self.precisionbox_2.setItemText(1, _translate("MainWindow", "4"))
+        self.precisionbox_2.setItemText(2, _translate("MainWindow", "5"))
+        self.precisionbox_2.setItemText(3, _translate("MainWindow", "6"))
+        self.precisionbox_2.setItemText(4, _translate("MainWindow", "7"))
+        self.precisionbox_2.setItemText(5, _translate("MainWindow", "8"))
+        self.precisionbox_2.setItemText(6, _translate("MainWindow", "9"))
+        self.precisionbox_2.setItemText(7, _translate("MainWindow", "10"))
+        self.precisionbox_2.setItemText(8, _translate("MainWindow", "11"))
+        self.precisionbox_2.setItemText(9, _translate("MainWindow", "12"))
+        self.precisionbox_2.setItemText(10, _translate("MainWindow", "13"))
+        self.precisionbox_2.setItemText(11, _translate("MainWindow", "14"))
+        self.precisionbox_2.setItemText(12, _translate("MainWindow", "15"))
+        self.precisionbox_2.setItemText(13, _translate("MainWindow", "16"))
+        self.precisionbox_2.setItemText(14, _translate("MainWindow", "17"))
+        self.precisionbox_2.setItemText(15, _translate("MainWindow", "18"))
+        self.precisionbox_2.setItemText(16, _translate("MainWindow", "19"))
+        self.precisionbox_2.setItemText(17, _translate("MainWindow", "20"))
+        self.proceedrootbtn.setText(_translate("MainWindow", "Proceed"))
+        self.rootopbox.setItemText(0, _translate("MainWindow", "Bisection"))
+        self.rootopbox.setItemText(1, _translate("MainWindow", "False position (Regular-falsi)"))
+        self.rootopbox.setItemText(2, _translate("MainWindow", "Fixed point iteration"))
+        self.rootopbox.setItemText(3, _translate("MainWindow", "Newton Raphson"))
+        self.rootopbox.setItemText(4, _translate("MainWindow", "Secant"))
+        self.label_5.setText(_translate("MainWindow", "Number of iterations:"))
+        self.label_6.setText(_translate("MainWindow", "Absolute relative error:"))
+        self.label_2.setText(_translate("MainWindow", "Enter the lower bound (xl):"))
+        self.label_3.setText(_translate("MainWindow", "Enter the upper bound (xu):"))
+        self.proceedfalsibtn.setText(_translate("MainWindow", "Proceed"))
+        self.label_4.setText(_translate("MainWindow", "Enter the first initial guess (x₀):"))
+        self.label_7.setText(_translate("MainWindow", "Enter the second initial guess (x₁):"))
+        self.proceedsecantbtn.setText(_translate("MainWindow", "Proceed"))
+        self.label_8.setText(_translate("MainWindow", "Enter the initial guess (x₀):"))
+        self.proceedfixedbtn.setText(_translate("MainWindow", "Proceed"))
+        self.backButtonroot.setText(_translate("MainWindow", "Back to menu"))
+        self.backButtonsecant.setText(_translate("MainWindow", "Back to menu"))
+        self.backButtonfalsi.setText(_translate("MainWindow", "Back to menu"))
+        self.backButtonfixed.setText(_translate("MainWindow", "Back to menu"))
 
     def backButtonShowMenu(self):
         self.setupUi()
+
+    def gotomain(self):
+        self.MainFrame.raise_()
+
+    def gotoroot(self):
+        self.rootscreen.raise_()
 
     def btnToggle(self):
         self.scalingState = not self.scalingState
@@ -588,7 +903,7 @@ class GUI(QMainWindow):
             if self.grid.itemAtPosition(i, 2 * n + 1).widget().text() != '':
                 b[i] = float(self.grid.itemAtPosition(i, 2 * n + 1).widget().text())
 
-        start = time.time() # start runtime of the functions
+        start = time.time()  # start runtime of the functions
 
         if operation == "Gauss Elimination" or operation == "Gauss Jordan":
             # self.equations.hide()
@@ -725,7 +1040,6 @@ class GUI(QMainWindow):
 
 
 if __name__ == "__main__":
-
     app = QtWidgets.QApplication(sys.argv)
     ui = GUI()
     sys.exit(app.exec_())
