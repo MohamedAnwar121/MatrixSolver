@@ -4,6 +4,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import *
 import numpy as np
+from Plot import Plot
+import pyqtgraph as pg
 
 from fixedPoint import *
 from NewtonRaphsonClass import *
@@ -834,6 +836,17 @@ class GUI(QMainWindow):
                 result += f'{i} , xr= {ll}'
                 self.newLabel.setText(result)
                 self.verticalLayout.addWidget(self.newLabel)
+
+                if operation == "Fixed point iteration":
+                    p = Plot(expression)
+                    container = QWidget()
+                    container = p.plotFixed(self.stepsDic[i])
+                    container.setFixedHeight(500)
+                    container.setFixedWidth(500)
+                    self.verticalLayout.addWidget(self.newLabel)
+                    self.verticalLayout.addWidget(container)
+
+
         elif operation == "Bisection" or operation == "False position (Regular-falsi)":
             for i in self.stepsDic:
                 self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)
@@ -851,9 +864,15 @@ class GUI(QMainWindow):
                 result = ""
                 result += f'{i} , xl= {xl} , xu= {xu} , xr= {xr}'
                 self.newLabel.setText(result)
-                p=Plot.plotBisection(expression,xlold,xrold,xr,xl,xu)
+                p = Plot(expression)
+                container = QWidget()
+                container = p.plotBisection(xlold,xuold,xr,xl,xu)
+                container.setFixedHeight(500)
+                container.setFixedWidth(500)
                 self.verticalLayout.addWidget(self.newLabel)
-                self.verticalLayout.addWidget(p)
+                self.verticalLayout.addWidget(container)
+
+                
         else:
             for i in self.stepsDic:
                 self.newLabel = QtWidgets.QLabel(self.scrollAreaWidgetContents)

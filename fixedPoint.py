@@ -56,12 +56,7 @@ class fixedPoint:
 #     print(ob.root)
 
 
-# x = np.linspace(-5,5,100)
-# z1 =[]
-# z2 =[]
-# for i in range(50):
-#     z1.append(i)
-#     z2.append(ob.func(i))
+
 # plt.plot(z1)
 # plt.plot(z2)
 # plt.show()
