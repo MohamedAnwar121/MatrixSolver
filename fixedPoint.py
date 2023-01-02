@@ -14,6 +14,7 @@ class fixedPoint:
         self.errorTolerance = tolerance
         self.nIteration = iter
         self.root = initial_guess
+        self.status = "diverge"
         self.exp = "fixedPoint.f = lambda self,x : " + exp
         exec(self.exp)
         self.steps["initial guess"] = initial_guess
@@ -40,6 +41,7 @@ class fixedPoint:
                     if ea <= self.errorTolerance:
                         self.root = xr
                         self.steps["root: "] = copy.copy(xr)
+                        self.status = "converge"
                         return
 
             self.root = xr
