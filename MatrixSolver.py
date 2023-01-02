@@ -832,10 +832,8 @@ class GUI(QMainWindow):
                 self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
 
                 ll = self.stepsDic[i]
-                xr=ll[0]
-                error=ll[1]
                 result = ""
-                result += f'{i} , xr= {ll}, error= {error}'
+                result += f'{i} , xr= {ll}'
                 self.newLabel.setText(result)
                 self.verticalLayout.addWidget(self.newLabel)
 
