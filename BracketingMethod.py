@@ -45,8 +45,9 @@ class BracketingMethod:
             elif Fxl * Fxr > 0:
                 self.xl = xr
             else:
+                self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr, xlold, xuold, round(ea, 7)]
                 break
-            self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr,xlold,xuold]
+            self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr,xlold,xuold,round(ea,7)]
             if ea < self.es and i > 0:
                 break
         return xr
@@ -78,6 +79,7 @@ class BracketingMethod:
             Fxu = self.func(self.xu)
 
             if Fxr == 0:
+                self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr, xlold, xuold, round(ea, 7)]
                 break
             elif Fxl * Fxr < 0:
                 self.xu = xr
@@ -87,9 +89,11 @@ class BracketingMethod:
                 Fxl = Fxr
             else:
                 return "false position method fails"
+
+            self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr, xlold, xuold, round(ea, 7)]
             if ea < self.es and i > 0:
                 break
-            self.steps[f'iteration {i + 1}'] = [self.xl, self.xu, xr,xlold,xuold]
+
         return xr
 
     def manager(self, function):
