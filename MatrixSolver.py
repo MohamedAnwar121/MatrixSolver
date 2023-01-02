@@ -838,14 +838,22 @@ class GUI(QMainWindow):
                 self.verticalLayout.addWidget(self.newLabel)
 
                 if operation == "Fixed point iteration":
-                    p = Plot(expression)
+                    p = Plot()
                     container = QWidget()
-                    container = p.plotFixed(self.stepsDic[i])
+                    container = p.plotFixed(self.stepsDic[i],expression)
                     container.setFixedHeight(500)
                     container.setFixedWidth(500)
                     self.verticalLayout.addWidget(self.newLabel)
                     self.verticalLayout.addWidget(container)
-
+                else:
+                    self.verticalLayout.addWidget(self.newLabel)
+            if operation=="Newton Raphson":
+                p = Plot()
+                container = QWidget()
+                container = p.plotNewtonSecant(expression)
+                container.setFixedHeight(500)
+                container.setFixedWidth(500)
+                self.verticalLayout.addWidget(container)
 
         elif operation == "Bisection" or operation == "False position (Regular-falsi)":
             for i in self.stepsDic:
@@ -864,9 +872,9 @@ class GUI(QMainWindow):
                 result = ""
                 result += f'{i} , xl= {xl} , xu= {xu} , xr= {xr}'
                 self.newLabel.setText(result)
-                p = Plot(expression)
+                p = Plot()
                 container = QWidget()
-                container = p.plotBisection(xlold,xuold,xr,xl,xu)
+                container = p.plotBisection(xlold,xuold,xr,xl,xu,expression)
                 container.setFixedHeight(500)
                 container.setFixedWidth(500)
                 self.verticalLayout.addWidget(self.newLabel)
@@ -889,7 +897,12 @@ class GUI(QMainWindow):
                 result += f'{i} , x0= {x0} , x1= {x1} , x2= {x2}'
                 self.newLabel.setText(result)
                 self.verticalLayout.addWidget(self.newLabel)
-
+            p = Plot()
+            container = QWidget()
+            container = p.plotNewtonSecant(expression)
+            container.setFixedHeight(500)
+            container.setFixedWidth(500)
+            self.verticalLayout.addWidget(container)
 
         self.backButton3 = QtWidgets.QPushButton()
         font = QtGui.QFont()
@@ -900,9 +913,11 @@ class GUI(QMainWindow):
         self.backButton3.clicked.connect(self.backButtonShowMenu)
         self.verticalLayout.addWidget(self.backButton2)
         self.steps.raise_()
-        self.steps.raise_()
+        # self.steps.raise_()
     def rootresult(self):
         global x
+        global status
+        status=""
         x = None
         expression = self.eqnin.text()
         strError = self.epsin.text()
@@ -950,11 +965,13 @@ class GUI(QMainWindow):
                 ob = fixedPoint(expression, x0, precision, errortol, n)
                 ob.fixedPt()
                 x = ob.root
+                status=ob.status
                 self.stepsDic = ob.steps
             else:
                 ob = NewtonRaphsonClass(expression, x0, precision, errortol, n)
                 ob.newtonRaphson()
                 x = ob.root
+                status=ob.status
                 self.stepsDic = ob.steps
 
         elif operation == "Secant":
@@ -969,6 +986,7 @@ class GUI(QMainWindow):
             print(expression, x0, x1, precision, errortol, n)
             s = secantmethod(expression, x0, x1, precision, errortol, n)
             x = s.secant()
+            status=s.status
             self.stepsDic = s.steps
 
         if isinstance(x, str):
@@ -989,6 +1007,13 @@ class GUI(QMainWindow):
         label.setScaledContents(False)
         label.setAlignment(QtCore.Qt.AlignCenter)
         self.ResultsLayout_2.addWidget(label)
+        labels = QLabel(f"{status}")
+        font = labels.font()
+        font.setPointSize(30)
+        labels.setFont(font)
+        labels.setScaledContents(False)
+        labels.setAlignment(QtCore.Qt.AlignCenter)
+        self.ResultsLayout_2.addWidget(labels)
 
         end = time.time()
         label = QLabel("Runtime = " + str(float(round((end - start) * (10 ** 3), 7))) + " ms")

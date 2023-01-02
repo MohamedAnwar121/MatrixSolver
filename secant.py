@@ -6,13 +6,14 @@ from Precision import *
 
 
 class secantmethod:
-    def __init__(self, exp, initial_guess1,initial_guess2, noOfSig, tolerance=1e-5, iter=50):
+    def __init__(self, exp, initial_guess1, initial_guess2, noOfSig, tolerance=1e-5, iter=50):
         self.steps = {}
         self.x0 = initial_guess1
         self.x1 = initial_guess2
         self.sigfig = noOfSig
         self.e = tolerance
         self.N = iter
+        self.status = "converge"
         self.exp = "secantmethod.f = lambda self,x : " + exp
         exec(self.exp)
 
@@ -35,7 +36,8 @@ class secantmethod:
                     print('Divide by zero error!')
                     return "can't find root"
 
-                x2 = Precision.sigFigures(self.sigfig, (x0 - (x1 - x0) * self.func(x0) / (self.func(x1) - self.func(x0))))
+                x2 = Precision.sigFigures(self.sigfig,
+                                          (x0 - (x1 - x0) * self.func(x0) / (self.func(x1) - self.func(x0))))
                 print(f'Iteration-{step}, x2 = {x2} and f(x2) = {self.func(x2)} , EPS = {(x2 - x1) / x2}')
                 self.steps[f'iteration {step}'] = [x0, x1, x2]
                 x0 = x1
@@ -43,21 +45,22 @@ class secantmethod:
                 step = step + 1
 
                 if step > self.N:
+                    self.status="diverge"
                     print('Not Convergent!')
-                    return "can't find root"
+                    return x2
 
                 print(abs((x1 - x0) / x1))
-                condition = abs((x1 - x0) / x1) > e
+                condition = abs((x1 - x0) / x1) > self.e
             print(f'\n Required root is: {x2}')
             return x2
 
         except:
             return "can't find root"
 
-x0 = float(0.5)
-x1 = float(1)
-e = float(5 / 100)
-# N = int()
-s=secantmethod("x**2-2",x0,x1,e)
-# Starting Secant Method
-print(s.secant())
+# x0 = float(0.5)
+# x1 = float(1)
+# e = float(5 / 100)
+# # N = int()
+# s=secantmethod("x**2-2",x0,x1,5,e)
+# # Starting Secant Method
+# print(s.secant())

@@ -10,6 +10,7 @@ class NewtonRaphsonClass:
         self.errorTolerance = tolerance
         self.nIteration = iter
         self.expr = expr
+        self.status="converge"
         self.steps["initial guess"] = initial_guess
         self.root = initial_guess
 
@@ -46,6 +47,7 @@ class NewtonRaphsonClass:
                 step = step + 1
                 self.root = x1
                 if step > self.nIteration:
+                    self.status="diverge"
                     break
 
                 if x1 != 0:
@@ -53,7 +55,7 @@ class NewtonRaphsonClass:
                     if (ea <= self.errorTolerance):
                         self.root = x1
                         self.steps["root: "] = copy.copy(x1)
-                        return;
+                        return
 
         except:
             self.root = "can't find root"
