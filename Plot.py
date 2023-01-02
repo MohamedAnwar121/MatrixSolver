@@ -60,10 +60,9 @@ class Plot:
             y.append(self.fx(i, expression))
 
         graphWidget.setBackground('w')
-        pen = pg.mkPen(color=(0, 0, 0), width=5)
         graphWidget.showGrid(x=True, y=True)
-        graphWidget.setXRange(min(x), max(x))
-        graphWidget.setYRange(min(y), max(y))
+        pen = pg.mkPen(color=(0, 0, 0), width=5)
+        graphWidget.plot(x, pen=pen)
         graphWidget.plot(x, y, pen=pen)
         pen = pg.mkPen(color=(0, 0, 0), width=3)
         b = [min(y), max(y)]
@@ -89,6 +88,7 @@ class Plot:
 
         graphWidget.setBackground('w')
         pen = pg.mkPen(color=(0, 0, 0), width=5)
+        graphWidget.showGrid(x=True, y=True)
         graphWidget.setXRange(min(x), max(x))
         graphWidget.setYRange(min(y), max(y))
         graphWidget.plot(x, y, pen=pen)

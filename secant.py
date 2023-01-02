@@ -13,6 +13,7 @@ class secantmethod:
         self.sigfig = noOfSig
         self.e = tolerance
         self.N = iter
+        self.ea = 0
         self.status = "converge"
         self.exp = "secantmethod.f = lambda self,x : " + exp
         exec(self.exp)
@@ -38,19 +39,20 @@ class secantmethod:
 
                 x2 = Precision.sigFigures(self.sigfig,
                                           (x0 - (x1 - x0) * self.func(x0) / (self.func(x1) - self.func(x0))))
-                print(f'Iteration-{step}, x2 = {x2} and f(x2) = {self.func(x2)} , EPS = {(x2 - x1) / x2}')
-                self.steps[f'iteration {step}'] = [x0, x1, x2]
+                if x2 != 0:
+                    self.ea = abs((x2 - x1) / x2)
+                print(f'Iteration-{step}, x2 = {x2} and f(x2) = {self.func(x2)} , EPS = {self.ea}')
+                self.steps[f'iteration {step}'] = [x0, x1, x2, float(round(self.ea, 7))]
                 x0 = x1
                 x1 = x2
                 step = step + 1
 
                 if step > self.N:
-                    self.status="diverge"
+                    self.status = "diverge"
                     print('Not Convergent!')
                     return x2
 
-                print(abs((x1 - x0) / x1))
-                condition = abs((x1 - x0) / x1) > self.e
+                condition = abs(self.ea) > self.e
             print(f'\n Required root is: {x2}')
             return x2
 

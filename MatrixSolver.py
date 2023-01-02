@@ -832,8 +832,10 @@ class GUI(QMainWindow):
                 self.newLabel.setAlignment(QtCore.Qt.AlignCenter)
 
                 ll = self.stepsDic[i]
+                xr=ll[0]
+                error=ll[1]
                 result = ""
-                result += f'{i} , xr= {ll}'
+                result += f'{i} , xr= {ll}, error= {error}'
                 self.newLabel.setText(result)
                 self.verticalLayout.addWidget(self.newLabel)
 
@@ -869,8 +871,9 @@ class GUI(QMainWindow):
                 xr=ll[2]
                 xlold=ll[3]
                 xuold=ll[4]
+                error=ll[5]
                 result = ""
-                result += f'{i} , xl= {xl} , xu= {xu} , xr= {xr}'
+                result += f'{i} , xl= {xl} , xu= {xu} , xr= {xr}, error= {error}'
                 self.newLabel.setText(result)
                 p = Plot()
                 container = QWidget()
@@ -893,8 +896,9 @@ class GUI(QMainWindow):
                 x0=ll[0]
                 x1=ll[1]
                 x2=ll[2]
+                error=ll[3]
                 result = ""
-                result += f'{i} , x0= {x0} , x1= {x1} , x2= {x2}'
+                result += f'{i}: x0= {x0}, x1= {x1}, x2= {x2}, error= {error}'
                 self.newLabel.setText(result)
                 self.verticalLayout.addWidget(self.newLabel)
             p = Plot()
@@ -996,7 +1000,7 @@ class GUI(QMainWindow):
             label.setFont(font)
             label.setScaledContents(False)
             label.setAlignment(QtCore.Qt.AlignCenter)
-            label.setText("Root is not found")
+            label.setText(x)
             self.ResultsLayout_2.addWidget(label)
             self.Results_2.raise_()
             return
